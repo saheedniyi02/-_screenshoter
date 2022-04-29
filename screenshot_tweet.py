@@ -24,7 +24,7 @@ my_username = "@_screenshoter"
 
 
 def clean_text(text, i, length):
-    words_per_line = 40
+    words_per_line = 43
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -43,7 +43,7 @@ def clean_text(text, i, length):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 40
+        words_per_line = 43
 
 
 def find_n(text, text_range):
