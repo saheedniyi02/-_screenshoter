@@ -1,3 +1,4 @@
+import os
 from tweepy import API, Client, OAuth1UserHandler
 from screenshot_tweet import create_tweet_screenshot_light, create_tweet_screenshot_dark
 from screenshot_reply import (
@@ -6,11 +7,11 @@ from screenshot_reply import (
 )
 
 
-API_KEY = "nNljw3F3uyPVKd6QS3Ygteaiq"
-API_SECRET_KEY = "43mxh68o1BWZ3snvrHnnojZpHbjVNez4YGt1XtcouD6tcYhUmr"
-BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAKrMbwEAAAAAW6P3%2FC6CX3OL1%2BoEKp9nL0WbuWI%3DRvFOnrG4MvDBbvcjZd0aDHWEortW7N2p2Tb7eX1vm4Dgjx9WJ1"
-ACCESS_TOKEN = "1518863995662389248-Vax1JaJzaEDI0QDZJXLQGsMbS5H4N2"
-ACCESS_TOKEN_SECRET = "J5A1h4WdcCEADnB5ySP65XhqQesbOljt54Ouu5xZr1Shr"
+API_KEY = os.environ.get("API_KEY")
+API_SECRET_KEY = os.environ.get("API_SECRET_KEY")
+BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
+ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,

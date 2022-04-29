@@ -1,3 +1,4 @@
+import os
 import requests
 import string
 import numpy as np
@@ -7,11 +8,11 @@ from PIL import Image, ImageFont, ImageDraw
 from tweepy import API, Client, OAuth1UserHandler
 
 
-API_KEY = "joOiKQ6lTTIUjASX2HREWjYTm"
-API_SECRET_KEY = "RRl12ScYrpNgISFx2q8gYLXXWusaa9mDYGRjnwbUu1Px7LLvxT"
-BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAP4LawEAAAAA0Ebpy3uA8Ogu8Lz61QNrQVZP3Hw%3DOkr5xe7yjeEfiWeLHADn8LUHUpt4foToDCHcK9JcwK18y0Pf9S"
-ACCESS_TOKEN = "1506919072214179840-6NEeuN9HWiOugaH0IOe9lGdycQaY5p"
-ACCESS_TOKEN_SECRET = "GQgje9G7NcTxGzVdj66HiU7pIvDSK2RPAScZKETqoac4p"
+API_KEY = os.environ.get("API_KEY")
+API_SECRET_KEY = os.environ.get("API_SECRET_KEY")
+BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
+ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
+ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
