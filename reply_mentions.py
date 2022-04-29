@@ -53,7 +53,7 @@ def reply_mentions():
             mention_id = mention.id
             author = mention.user.screen_name
             replied_to_id, full_text = get_tweet_id_text(mention)
-            if (f"{mention_id}\n" not in replied_ids_list) and ("screenshot" in full_text.lower()):
+            if (f"{mention_id}\n" not in replied_ids_list) and ("screenshot" in full_text.lower()) and ("your screenshot can be found here" not in full_text.lower()):
                 if ("light" in full_text) :
                     if "conversation" in full_text:
                         image = create_replies_screenshot_light(replied_to_id)
