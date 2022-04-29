@@ -51,17 +51,10 @@ def reply_mentions():
     for mention in reversed(mentions):
         try:
             mention_id = mention.id
-            if f"{mention_id}\n" not in replied_ids_list:
-                author = mention.user.screen_name
-                replied_to_id, full_text = get_tweet_id_text(mention)
-                if "dark" in full_text:
-                    if "conversation" in full_text:
-                        image = create_replies_screenshot_dark(replied_to_id)
-                        if image == None:
-                            image = create_tweet_screenshot_dark(replied_to_id)
-                    else:
-                        image = create_tweet_screenshot_dark(replied_to_id)
-                elif "light" in full_text:
+            author = mention.user.screen_name
+            replied_to_id, full_text = get_tweet_id_text(mention)
+            if (f"{mention_id}\n" not in replied_ids_list) and ("screenshot" in full_text.lower()):
+                if ("light" in full_text) :
                     if "conversation" in full_text:
                         image = create_replies_screenshot_light(replied_to_id)
                         if image == None:
@@ -87,7 +80,7 @@ def reply_mentions():
                 replied_ids.close()
                 print(mention_id)
             else:
-                print("replied already")
+                print("replied already or not a valid screenshot request")
         except:
             pass
 
@@ -97,4 +90,3 @@ def clean_replied():
     replied_ids.close()
 
 
-reply_mentions()
