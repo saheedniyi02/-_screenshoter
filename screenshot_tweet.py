@@ -24,7 +24,7 @@ my_username = "@_screenshoter"
 
 
 def clean_text(text, i, length):
-    words_per_line = 43
+    words_per_line = 40
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -43,7 +43,7 @@ def clean_text(text, i, length):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 43
+        words_per_line = 40
 
 
 def find_n(text, text_range):
@@ -66,7 +66,16 @@ def find_n(text, text_range):
 
 def create_tweet_screenshot_light(id):
     tweet_info = get_tweet_info(id)
-    profile_name, username, user_verified, text, profile_pics, date, text_range = (
+    (
+        profile_name,
+        username,
+        user_verified,
+        text,
+        profile_pics,
+        date,
+        text_range,
+        quoted_id,
+    ) = (
         tweet_info["name"],
         tweet_info["username"],
         tweet_info["verified"],
@@ -74,7 +83,9 @@ def create_tweet_screenshot_light(id):
         tweet_info["image"],
         tweet_info["date"],
         tweet_info["text_range"],
+        tweet_info["quoted_id"],
     )
+
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
@@ -84,7 +95,7 @@ def create_tweet_screenshot_light(id):
     space_profile = 186
     date_height = int(space_text + border_top_bottom + space_profile + 20)
     total_height = int(space_text + 2 * border_top_bottom + space_profile)
-    img = Image.new(mode="RGB", size=(width, total_height), color=(256, 256, 256))
+    img = Image.new(mode="RGB", size=(width, total_height), color=(255, 255, 255))
     drawer = ImageDraw.Draw(img)
     drawer.rectangle(
         [(int(width * 0.76), int(total_height - 55)), (width, total_height)],

@@ -1,4 +1,5 @@
 import os
+import html
 import requests
 import string
 import numpy as np
@@ -13,6 +14,7 @@ API_SECRET_KEY = os.environ.get("API_SECRET_KEY")
 BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
+
 
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
@@ -38,6 +40,11 @@ def get_tweet_info(id):
     except:
         profile_picture = Image.open("default_profile.png")
         profile_picture = profile_picture.convert("RGB")
+    try:
+        quoted_id = replied_to.quoted_status.id
+        print(quoted_id)
+    except:
+        quoted_id = None
     return {
         "name": user_info.name,
         "username": "@" + str(user_info.screen_name),
@@ -48,7 +55,13 @@ def get_tweet_info(id):
         "in_reply_to_status_id": replied_to.in_reply_to_status_id,
         "mentioned_users": mentioned_usernames,
         "text_range": replied_to.display_text_range,
+        "quoted_id": quoted_id,
     }
+
+
+def decode_html(text):
+    text = html.unescape(text)
+    return text
 
 
 def check_last_space(last_index, text):
@@ -63,6 +76,7 @@ def check_last_space(last_index, text):
 
 
 def remove_start_space(line):
+    line = decode_html(line)
     try:
         if line[0] == " ":
             line = line[1 : len(line)]
