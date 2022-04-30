@@ -43,7 +43,7 @@ def get_mention_id(mention):
 
 
 def reply_mentions():
-    count = 1
+    count = 5
     reply = "Your screenshot can be found below"
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
