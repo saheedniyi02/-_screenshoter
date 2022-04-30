@@ -84,8 +84,8 @@ def reply_mentions():
                     else:
                         image = create_tweet_screenshot_dark(replied_to_id)
                 image.save("screenshot.jpg")
-                # media = api.media_upload(filename="screenshot.jpg")
-                # api.update_status(status=f"@{author} {reply} \n",in_reply_to_status_id=str(mention_id),media_ids=[media.media_id_string],)
+                media = api.media_upload(filename="screenshot.jpg")
+                api.update_status(status=f"@{author} {reply} \n",in_reply_to_status_id=str(mention_id),media_ids=[media.media_id_string],)
                 replied_ids = open("replied_ids.txt", "a")
                 replied_ids.write(f"{mention_id}\n")
                 replied_ids.close()
