@@ -419,7 +419,3 @@ def screenshot_quote_dark(id):
             ),
         )
     return img
-
-
-img = screenshot_quote_dark(1520363890965626885)
-img.save("quotes_dark.jpg")
