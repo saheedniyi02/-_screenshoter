@@ -106,7 +106,7 @@ def create_tweet_screenshot_light(id):
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
-        space_text = 45 * no_lines * 1.2
+        space_text = 45 * no_lines * 1.4
     space_profile = 186
     attached_image_loc = int(space_text + border_top_bottom + space_profile + 10)
     date_height = int(
@@ -200,7 +200,7 @@ def create_tweet_screenshot_dark(id):
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
-        space_text = 45 * no_lines * 1.2
+        space_text = 45 * no_lines * 1.4
     space_profile = 185
     attached_image_loc = int(space_text + border_top_bottom + space_profile + 10)
     date_height = int(
