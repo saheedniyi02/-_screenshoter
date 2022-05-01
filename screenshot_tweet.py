@@ -254,7 +254,3 @@ def create_tweet_screenshot_dark(id):
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
     return img
-#https://twitter.com/folkeiry/status/1520460995763884034?t=r1fXX2ByXQnLn-1RMnB6Xw&s=19
-
-img = create_tweet_screenshot_light(1520460995763884034)
-img.save("img.jpg")
