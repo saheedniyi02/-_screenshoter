@@ -261,7 +261,7 @@ def screenshot_quote_light(id):
 
     img.paste(profile_pics, (70, 120), mask)
     if user_verified == True:
-        img.paste(verified, (int(240 + 28.15 * (profile_name_score)), 128))
+        img.paste(verified, (int(240 + 28.15 * (profile_name_score)), 140))
     # quote
     drawer_emoji.text(
         (170, quoted_start_height + 185 + border_top_bottom_quoted),
@@ -471,7 +471,7 @@ def screenshot_quote_dark(id):
         img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
 
     if user_verified == True:
-        img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
+        img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 140))
         # quote
     drawer_emoji.text(
         (170, quoted_start_height + 185 + border_top_bottom_quoted),
