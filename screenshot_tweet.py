@@ -102,7 +102,7 @@ def create_tweet_screenshot_light(id):
     width = 1300
     border_top_bottom = 120
     if no_lines <= 2:
-        space_text = 45 * no_lines * 1.6
+        space_text = 45 * no_lines * 1.8
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
@@ -196,7 +196,7 @@ def create_tweet_screenshot_dark(id):
     width = 1300
     border_top_bottom = 120
     if no_lines <= 2:
-        space_text = 45 * no_lines * 1.6
+        space_text = 45 * no_lines * 1.8
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
