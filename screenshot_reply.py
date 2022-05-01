@@ -12,11 +12,11 @@ from utils import (
 )
 
 
-verified = Image.open("verified.png")
+verified = Image.open("assets/verified.png")
 verified = verified.convert("RGB")
 verified = verified.resize((45, 45))
 
-verified_dark = Image.open("verified_dark.png")
+verified_dark = Image.open("assets/verified_dark.png")
 verified_dark = verified_dark.convert("RGB")
 verified_dark = verified_dark.resize((45, 45))
 my_username = "@_screenshoter"
@@ -129,9 +129,9 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
     text_height = 290 + increase_height
     drawer = ImageDraw.Draw(img)
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("OpenSans-Regular.ttf", 50)
-    font_username = ImageFont.truetype("OpenSans-Regular.ttf", 45)
-    bold_font = ImageFont.truetype("Roboto-Bold.ttf", 50)
+    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 50)
+    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # Add Text to image
     drawer_emoji.text(
         (70, text_height),
@@ -183,9 +183,9 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     text_height = 290 + increase_height
     drawer = ImageDraw.Draw(img)
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("OpenSans-Regular.ttf", 50)
-    font_username = ImageFont.truetype("OpenSans-Regular.ttf", 45)
-    bold_font = ImageFont.truetype("Roboto-Bold.ttf", 50)
+    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 50)
+    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # Add Text to image
     drawer_emoji.text(
         (70, text_height),
@@ -223,7 +223,7 @@ def create_replies_screenshot_light(id):
         [(int(width * 0.76), int(total_height - 55)), (width, total_height)],
         fill=(235, 240, 235),
     )
-    font_my_username = ImageFont.truetype("OpenSans-Regular.ttf", 35)
+    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
         my_username,
@@ -253,7 +253,7 @@ def create_replies_screenshot_dark(id):
         [(int(width * 0.76), int(total_height - 55)), (width, total_height)],
         fill=(41, 39, 39),
     )
-    font_my_username = ImageFont.truetype("OpenSans-Regular.ttf", 35)
+    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
         my_username,

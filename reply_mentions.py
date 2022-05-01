@@ -48,7 +48,7 @@ def reply_mentions():
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
-    replied_ids = open("replied_ids.txt", "r")
+    replied_ids = open("assets/replied_ids.txt", "r")
     replied_ids_list = [replied_id for replied_id in replied_ids]
     replied_ids.close()
     for mention in reversed(mentions):
@@ -85,8 +85,12 @@ def reply_mentions():
                         image = create_tweet_screenshot_dark(replied_to_id)
                 image.save("screenshot.jpg")
                 media = api.media_upload(filename="screenshot.jpg")
-                api.update_status(status=f"@{author} {reply} \n",in_reply_to_status_id=str(mention_id),media_ids=[media.media_id_string],)
-                replied_ids = open("replied_ids.txt", "a")
+                api.update_status(
+                    status=f"@{author} {reply} \n",
+                    in_reply_to_status_id=str(mention_id),
+                    media_ids=[media.media_id_string],
+                )
+                replied_ids = open("assets/replied_ids.txt", "a")
                 replied_ids.write(f"{mention_id}\n")
                 replied_ids.close()
                 print(mention_id)
@@ -97,5 +101,5 @@ def reply_mentions():
 
 
 def clean_replied():
-    replied_ids = open("replied_ids.txt", "w")
+    replied_ids = open("assets/replied_ids.txt", "w")
     replied_ids.close()

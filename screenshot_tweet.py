@@ -12,56 +12,58 @@ from utils import (
     get_profile_pics_mask,
 )
 
-verified = Image.open("verified.png")
+verified = Image.open("assets/verified.png")
 verified = verified.convert("RGB")
 verified = verified.resize((45, 45))
 
-verified_dark = Image.open("verified_dark.png")
+verified_dark = Image.open("assets/verified_dark.png")
 verified_dark = verified_dark.convert("RGB")
 verified_dark = verified_dark.resize((45, 45))
 
 my_username = "@_screenshoter"
 
 
-def clean_text(text, i, length):
-    words_per_line = 40
+
+def clean_text(text):
+    words_per_line = 43
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
         if len(text) <= words_per_line:
             line = text
             line = remove_start_space(line)
-            if i == length - 1:
-                line = re.sub("http[s]?://\S+", "", line)
+            line = re.sub("http[s]://t.co\S+", "", line)
             lines.append(line)
             new_text = "".join(lines)
             return new_text, len(lines)
         line, words_per_line = check_last_space(words_per_line, text)
+        line = re.sub("http[s]://t.co\S+", "", line)
         text = text.replace(text[:words_per_line], "")
         words = line.split()
         line = " ".join(words)
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 40
-
+        words_per_line = 43
 
 def find_n(text, text_range):
     text = text[text_range[0] :]
     text_split = text.split("\n")
     new_text = ""
     total_lines = 0
-    i = 0
     for txt in text_split:
         if txt == "":
             new_text = new_text + "\n"
             total_lines = total_lines + 1
         else:
-            txt_lines, no_lines = clean_text(txt, i, len(text_split))
+            txt_lines, no_lines = clean_text(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
-        i = i + 1
+    new_text_stripped= new_text.rstrip('\n')
+    total_lines=total_lines-(len(new_text)-len(new_text_stripped))/2
     return new_text, total_lines
+
+
 
 
 def create_tweet_screenshot_light(id):
@@ -74,7 +76,7 @@ def create_tweet_screenshot_light(id):
         profile_pics,
         date,
         text_range,
-        quoted_id,
+        attached_image,
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -83,18 +85,36 @@ def create_tweet_screenshot_light(id):
         tweet_info["image"],
         tweet_info["date"],
         tweet_info["text_range"],
-        tweet_info["quoted_id"],
+        tweet_info["attached_image"],
     )
 
     text, no_lines = find_n(text, text_range)
+    if attached_image:
+        attached_image_height = 1300
+        attached_image_width = 1150
+        attached_image = attached_image.resize(
+            (attached_image_width, attached_image_height)
+        )
+    else:
+        attached_image_height = 0
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
-    space_text = 45 * no_lines * 1.5
+    if no_lines <= 2:
+        space_text = 45 * no_lines * 1.6
+    elif no_lines >= 8:
+        space_text = 45 * no_lines * 1.35
+    else:
+        space_text = 45 * no_lines * 1.2
     space_profile = 186
-    date_height = int(space_text + border_top_bottom + space_profile + 20)
-    total_height = int(space_text + 2 * border_top_bottom + space_profile)
+    attached_image_loc = int(space_text + border_top_bottom + space_profile + 10)
+    date_height = int(
+        space_text + border_top_bottom + +attached_image_height + space_profile + 30
+    )
+    total_height = int(
+        space_text + 2 * border_top_bottom + space_profile + attached_image_height + 30
+    )
     img = Image.new(mode="RGB", size=(width, total_height), color=(255, 255, 255))
     drawer = ImageDraw.Draw(img)
     drawer.rectangle(
@@ -102,10 +122,10 @@ def create_tweet_screenshot_light(id):
         fill=(235, 240, 235),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("OpenSans-Regular.ttf", 45)
-    bold_font = ImageFont.truetype("Roboto-Bold.ttf", 50)
-    font_my_username = ImageFont.truetype("OpenSans-Regular.ttf", 35)
+    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
+    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
+    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
     # Add Text to image
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
@@ -126,6 +146,16 @@ def create_tweet_screenshot_light(id):
     drawer.text((240, 185), username, font=font_username, fill=(134, 135, 134))
     drawer.text((70, date_height), date, font=font_username, fill=(134, 135, 134))
     img.paste(profile_pics, (70, 120), mask)
+    if attached_image:
+        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (attached_image_width, attached_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
         img.paste(verified, (int(240 + 28.15 * (profile_name_score)), 140))
     return img
@@ -133,7 +163,16 @@ def create_tweet_screenshot_light(id):
 
 def create_tweet_screenshot_dark(id):
     tweet_info = get_tweet_info(id)
-    profile_name, username, user_verified, text, profile_pics, date, text_range = (
+    (
+        profile_name,
+        username,
+        user_verified,
+        text,
+        profile_pics,
+        date,
+        text_range,
+        attached_image,
+    ) = (
         tweet_info["name"],
         tweet_info["username"],
         tweet_info["verified"],
@@ -141,16 +180,35 @@ def create_tweet_screenshot_dark(id):
         tweet_info["image"],
         tweet_info["date"],
         tweet_info["text_range"],
+        tweet_info["attached_image"],
     )
     text, no_lines = find_n(text, text_range)
+    if attached_image:
+        attached_image_height = 1300
+        attached_image_width = 1150
+        attached_image = attached_image.resize(
+            (attached_image_width, attached_image_height)
+        )
+    else:
+        attached_image_height = 0
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
-    space_text = 45 * no_lines * 1.5
-    space_profile = 186
-    date_height = int(space_text + border_top_bottom + space_profile + 20)
-    total_height = int(space_text + 2 * border_top_bottom + space_profile)
+    if no_lines <= 2:
+        space_text = 45 * no_lines * 1.6
+    elif no_lines >= 8:
+        space_text = 45 * no_lines * 1.35
+    else:
+        space_text = 45 * no_lines * 1.2
+    space_profile = 185
+    attached_image_loc = int(space_text + border_top_bottom + space_profile + 10)
+    date_height = int(
+        space_text + border_top_bottom + +attached_image_height + space_profile + 30
+    )
+    total_height = int(
+        space_text + 2 * border_top_bottom + space_profile + attached_image_height + 30
+    )
     img = Image.new(mode="RGB", size=(width, total_height), color=(0, 0, 0))
     drawer = ImageDraw.Draw(img)
     drawer.rectangle(
@@ -158,10 +216,10 @@ def create_tweet_screenshot_dark(id):
         fill=(41, 39, 39),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("OpenSans-Regular.ttf", 45)
-    font_my_username = ImageFont.truetype("OpenSans-Regular.ttf", 35)
-    bold_font = ImageFont.truetype("Roboto-Bold.ttf", 50)
+    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
+    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
         my_username,
@@ -183,6 +241,20 @@ def create_tweet_screenshot_dark(id):
     drawer.text((240, 185), username, font=font_username, fill=(196, 195, 194))
     drawer.text((70, date_height), date, font=font_username, fill=(196, 195, 194))
     img.paste(profile_pics, (70, 120), mask)
+    if attached_image:
+        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (attached_image_width, attached_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
     return img
+#https://twitter.com/folkeiry/status/1520460995763884034?t=r1fXX2ByXQnLn-1RMnB6Xw&s=19
+
+img = create_tweet_screenshot_light(1520460995763884034)
+img.save("img.jpg")

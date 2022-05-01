@@ -16,6 +16,7 @@ ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 
+
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
     consumer_secret=API_SECRET_KEY,
@@ -38,13 +39,19 @@ def get_tweet_info(id):
     try:
         profile_picture = Image.open(urlopen(profile_url))
     except:
-        profile_picture = Image.open("default_profile.png")
+        profile_picture = Image.open("assets/default_profile.png")
         profile_picture = profile_picture.convert("RGB")
     try:
         quoted_id = replied_to.quoted_status.id
         print(quoted_id)
     except:
         quoted_id = None
+    try:
+        image_url = replied_to.entities["media"][0]["media_url_https"]
+        attached_image = Image.open(urlopen(image_url))
+    except:
+        attached_image = None
+
     return {
         "name": user_info.name,
         "username": "@" + str(user_info.screen_name),
@@ -56,6 +63,7 @@ def get_tweet_info(id):
         "mentioned_users": mentioned_usernames,
         "text_range": replied_to.display_text_range,
         "quoted_id": quoted_id,
+        "attached_image": attached_image,
     }
 
 

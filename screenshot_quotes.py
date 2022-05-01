@@ -13,11 +13,11 @@ from utils import (
 )
 
 
-verified = Image.open("verified.png")
+verified = Image.open("assets/verified.png")
 verified = verified.convert("RGB")
 verified = verified.resize((45, 45))
 
-verified_dark = Image.open("verified_dark.png")
+verified_dark = Image.open("assets/verified_dark.png")
 verified_dark = verified_dark.convert("RGB")
 verified_dark = verified_dark.resize((45, 45))
 
@@ -25,7 +25,7 @@ verified_dark = verified_dark.resize((45, 45))
 my_username = "@_screenshoter"
 
 
-def clean_text(text, i, length):
+def clean_text(text):
     words_per_line = 43
     no_lines = (len(text) // words_per_line) + 1
     lines = []
@@ -33,12 +33,12 @@ def clean_text(text, i, length):
         if len(text) <= words_per_line:
             line = text
             line = remove_start_space(line)
-            if i == length - 1:
-                line = re.sub("http[s]?://\S+", "", line)
+            line = re.sub("http[s]://t.co\S+", "", line)
             lines.append(line)
             new_text = "".join(lines)
             return new_text, len(lines)
         line, words_per_line = check_last_space(words_per_line, text)
+        line = re.sub("http[s]://t.co\S+", "", line)
         text = text.replace(text[:words_per_line], "")
         words = line.split()
         line = " ".join(words)
@@ -48,20 +48,20 @@ def clean_text(text, i, length):
         words_per_line = 43
 
 
-def clean_text_quotes(text, i, length):
-    words_per_line = 39
+def clean_text_quotes(text):
+    words_per_line = 38
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
         if len(text) <= words_per_line:
             line = text
             line = remove_start_space(line)
-            if i == length - 1:
-                line = re.sub("http[s]?://\S+", "", line)
+            line = re.sub("http[s]://t.co\S+", "", line)
             lines.append(line)
             new_text = "".join(lines)
             return new_text, len(lines)
         line, words_per_line = check_last_space(words_per_line, text)
+        line = re.sub("http[s]://t.co\S+", "", line)
         text = text.replace(text[:words_per_line], "")
 
         words = line.split()
@@ -69,7 +69,7 @@ def clean_text_quotes(text, i, length):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 39
+        words_per_line = 38
 
 
 def find_n(text, text_range):
@@ -77,16 +77,16 @@ def find_n(text, text_range):
     text_split = text.split("\n")
     new_text = ""
     total_lines = 0
-    i = 0
     for txt in text_split:
         if txt == "":
             new_text = new_text + "\n"
             total_lines = total_lines + 1
         else:
-            txt_lines, no_lines = clean_text(txt, i, len(text_split))
+            txt_lines, no_lines = clean_text(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
-        i = i + 1
+    new_text_stripped= new_text.rstrip('\n')
+    total_lines=total_lines-(len(new_text)-len(new_text_stripped))/2
     return new_text, total_lines
 
 
@@ -95,16 +95,16 @@ def find_n_quotes(text, text_range):
     text_split = text.split("\n")
     new_text = ""
     total_lines = 0
-    i = 0
     for txt in text_split:
         if txt == "":
             new_text = new_text + "\n"
             total_lines = total_lines + 1
         else:
-            txt_lines, no_lines = clean_text_quotes(txt, i, len(text_split))
+            txt_lines, no_lines = clean_text_quotes(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
-        i = i + 1
+    new_text_stripped= new_text.rstrip('\n')
+    total_lines=total_lines-(len(new_text)-len(new_text_stripped))/2
     return new_text, total_lines
 
 
@@ -119,6 +119,7 @@ def screenshot_quote_light(id):
         date,
         text_range,
         quoted_id,
+        attached_image,
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -128,8 +129,8 @@ def screenshot_quote_light(id):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["quoted_id"],
+        tweet_info["attached_image"],
     )
-    print(tweet_info)
     if quoted_id == None:
         return None
     quoted_info = get_tweet_info(quoted_id)
@@ -142,6 +143,7 @@ def screenshot_quote_light(id):
         date_quote,
         text_range_quoted,
         _,
+        quoted_image,
     ) = (
         quoted_info["name"],
         quoted_info["username"],
@@ -151,38 +153,66 @@ def screenshot_quote_light(id):
         quoted_info["date"],
         quoted_info["text_range"],
         quoted_info["quoted_id"],
+        quoted_info["attached_image"],
     )
     text, no_lines = find_n(text, text_range)
+    if attached_image:
+        attached_image_height = 1300
+        attached_image_width = 1150
+        attached_image = attached_image.resize(
+            (attached_image_width, attached_image_height)
+        )
+    else:
+        attached_image_height = 0
+    if quoted_image:
+        quoted_image_height = 1070
+        quoted_image_width = 1050
+        quoted_image = quoted_image.resize((quoted_image_width, quoted_image_height))
+    else:
+        quoted_image_height = 0
     quote_text, no_lines_quoted = find_n_quotes(quote_text, text_range_quoted)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
     profile_pics_quoted, mask = get_profile_pics_mask(profile_pics_quoted)
     profile_name_quoted_score = get_profile_name_score(profile_name_quoted)
+
     # dimensions
     width = 1300
     border_top_bottom = 120
-    space_text = 45 * no_lines * 1.4
-    space_profile = 186
-    if no_lines_quoted <= 4:
-        space_text_quoted = 45 * no_lines_quoted * 2
+    if no_lines <= 2:
+        space_text = 45 * no_lines * 1.6
+    elif no_lines >= 8:
+        space_text = 45 * no_lines * 1.35
     else:
+        space_text = 45 * no_lines * 1.5
+    space_profile = 186
+    if no_lines_quoted < 4:
+        space_text_quoted = 45 * no_lines_quoted * 2
+    elif no_lines_quoted >= 4:
         space_text_quoted = 45 * no_lines_quoted * 1.4
     border_top_bottom_quoted = 60
-    quoted_start_height = int(space_text + border_top_bottom + space_profile + 10)
-    quoted_end_height = (
+    attached_image_loc = int(space_text + border_top_bottom + space_profile)
+    quoted_start_height = int(
+        space_text + border_top_bottom + space_profile + 10 + attached_image_height + 20
+    )
+    quoted_image_loc = int(
         quoted_start_height
-        + 2 * border_top_bottom_quoted
+        + border_top_bottom_quoted
         + space_text_quoted
         + space_profile
+        + 10
+    )
+    quoted_end_height = (
+        quoted_image_loc + border_top_bottom_quoted + quoted_image_height + 75
     )
     quoted_date_height = quoted_end_height - 40 - border_top_bottom_quoted
     date_height = quoted_end_height + 30
-    total_height = quoted_end_height + 120
+    total_height = quoted_end_height + border_top_bottom
     # image
     img = Image.new(mode="RGB", size=(width, int(total_height)), color=(255, 255, 255))
     drawer = ImageDraw.Draw(img)
     drawer.rounded_rectangle(
-        [(100, quoted_start_height), (width - 100, quoted_end_height)],
+        [(100, quoted_start_height), (width - 35, quoted_end_height)],
         fill=(255, 255, 255),
         width=2,
         outline=(224, 224, 224),
@@ -193,11 +223,11 @@ def screenshot_quote_light(id):
         fill=(41, 39, 39),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("OpenSans-Regular.ttf", 45)
-    font_my_username = ImageFont.truetype("OpenSans-Regular.ttf", 35)
-    font_quote_date = ImageFont.truetype("OpenSans-Regular.ttf", 35)
-    bold_font = ImageFont.truetype("Roboto-Bold.ttf", 50)
+    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
+    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    font_quote_date = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # tweet
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
@@ -218,6 +248,17 @@ def screenshot_quote_light(id):
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(0, 0, 0))
     drawer.text((240, 185), username, font=font_username, fill=(134, 135, 134))
     drawer.text((70, date_height), date, font=font_username, fill=(134, 135, 134))
+    if attached_image:
+        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (attached_image_width, attached_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
+
     img.paste(profile_pics, (70, 120), mask)
     if user_verified == True:
         img.paste(verified, (int(240 + 28.15 * (profile_name_score)), 128))
@@ -253,6 +294,17 @@ def screenshot_quote_light(id):
     img.paste(
         profile_pics_quoted, (170, quoted_start_height + border_top_bottom_quoted), mask
     )
+    if quoted_image:
+        mask_image = Image.new("L", [quoted_image_width, quoted_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (quoted_image_width, quoted_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(quoted_image, (170, quoted_image_loc), mask=mask_image)
+
     if user_verified_quoted == True:
         img.paste(
             verified,
@@ -275,6 +327,7 @@ def screenshot_quote_dark(id):
         date,
         text_range,
         quoted_id,
+        attached_image,
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -284,6 +337,7 @@ def screenshot_quote_dark(id):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["quoted_id"],
+        tweet_info["attached_image"],
     )
     if quoted_id == None:
         return None
@@ -297,6 +351,7 @@ def screenshot_quote_dark(id):
         date_quote,
         text_range_quoted,
         _,
+        quoted_image,
     ) = (
         quoted_info["name"],
         quoted_info["username"],
@@ -306,8 +361,24 @@ def screenshot_quote_dark(id):
         quoted_info["date"],
         quoted_info["text_range"],
         quoted_info["quoted_id"],
+        quoted_info["attached_image"],
     )
     text, no_lines = find_n(text, text_range)
+    if attached_image:
+        attached_image_height = 1150
+        attached_image_width = 1150
+        attached_image = attached_image.resize(
+            (attached_image_width, attached_image_height)
+        )
+    else:
+        attached_image_height = 0
+
+    if quoted_image:
+        quoted_image_height = 1070
+        quoted_image_width = 1050
+        quoted_image = quoted_image.resize((quoted_image_width, quoted_image_height))
+    else:
+        quoted_image_height = 0
     quote_text, no_lines_quoted = find_n_quotes(quote_text, text_range_quoted)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
@@ -317,28 +388,40 @@ def screenshot_quote_dark(id):
     # dimensions
     width = 1300
     border_top_bottom = 120
-    space_text = 45 * no_lines * 1.4
-    space_profile = 186
-    if no_lines_quoted <= 4:
-        space_text_quoted = 45 * no_lines_quoted * 2
+    if no_lines <= 2:
+        space_text = 45 * no_lines * 1.6
+    elif no_lines >= 8:
+        space_text = 45 * no_lines * 1.35
     else:
-        space_text_quoted = 45 * no_lines_quoted * 1.5
+        space_text = 45 * no_lines * 1.2
+    space_profile = 186
+    if no_lines_quoted < 4:
+        space_text_quoted = 45 * no_lines_quoted *2
+    elif no_lines_quoted >= 4:
+        space_text_quoted = 45 * no_lines_quoted * 1.4
     border_top_bottom_quoted = 60
-    quoted_start_height = int(space_text + border_top_bottom + space_profile + 10)
-    quoted_end_height = (
+    attached_image_loc = int(space_text + border_top_bottom + space_profile)
+    quoted_start_height = int(
+        space_text + border_top_bottom + space_profile + 10 + attached_image_height + 20
+    )
+    quoted_image_loc = int(
         quoted_start_height
-        + 2 * border_top_bottom_quoted
+        + border_top_bottom_quoted
         + space_text_quoted
         + space_profile
+        + 10
+    )
+    quoted_end_height = (
+        quoted_image_loc + border_top_bottom_quoted + quoted_image_height + 75
     )
     quoted_date_height = quoted_end_height - 40 - border_top_bottom_quoted
     date_height = quoted_end_height + 30
-    total_height = quoted_end_height + 120
+    total_height = quoted_end_height + border_top_bottom
     # image
     img = Image.new(mode="RGB", size=(width, int(total_height)), color=(0, 0, 0))
     drawer = ImageDraw.Draw(img)
     drawer.rounded_rectangle(
-        [(100, quoted_start_height), (width - 100, quoted_end_height)],
+        [(100, quoted_start_height), (width - 35, quoted_end_height)],
         fill=(0, 0, 0),
         width=3,
         outline=(35, 35, 35),
@@ -349,11 +432,11 @@ def screenshot_quote_dark(id):
         fill=(235, 240, 235),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("OpenSans-Regular.ttf", 45)
-    font_my_username = ImageFont.truetype("OpenSans-Regular.ttf", 35)
-    font_quote_date = ImageFont.truetype("OpenSans-Regular.ttf", 35)
-    bold_font = ImageFont.truetype("Roboto-Bold.ttf", 50)
+    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
+    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    font_quote_date = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
 
     # tweet
     drawer.text(
@@ -376,6 +459,17 @@ def screenshot_quote_dark(id):
     drawer.text((240, 185), username, font=font_username, fill=(196, 195, 194))
     drawer.text((70, date_height), date, font=font_username, fill=(196, 195, 194))
     img.paste(profile_pics, (70, 120), mask)
+    if attached_image:
+        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (attached_image_width, attached_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
+
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
         # quote
@@ -410,6 +504,18 @@ def screenshot_quote_dark(id):
     img.paste(
         profile_pics_quoted, (170, quoted_start_height + border_top_bottom_quoted), mask
     )
+
+    if quoted_image:
+        mask_image = Image.new("L", [quoted_image_width, quoted_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (quoted_image_width, quoted_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(quoted_image, (170, quoted_image_loc), mask=mask_image)
+
     if user_verified_quoted == True:
         img.paste(
             verified_dark,
@@ -419,3 +525,4 @@ def screenshot_quote_dark(id):
             ),
         )
     return img
+
