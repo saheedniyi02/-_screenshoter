@@ -15,7 +15,11 @@ BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
-
+API_KEY = "v3Erx5FaRXzzsdTyKlVF06Vsv"
+API_SECRET_KEY = "NVtgLE0NdHEhcMbq0CkGYt143Gm6hKR1KS09F11UDgKoSkh7Ku"
+BEARER_TOKEN = " AAAAAAAAAAAAAAAAAAAAAKrMbwEAAAAAzYiaf0sFOscq80AVJicrqnTRF1s%3D19zEJ6OYzU3V6gIsrWC9rmXDg48Mi7YnHaFZDxwvZXE3yA15w2"
+ACCESS_TOKEN = "1518863995662389248-1ll5M7E6o39ebR9eNl3JItPCV64cbN"
+ACCESS_TOKEN_SECRET = "9mwuqFA6hmaF3xdkpGcCeMuBBRzVbArewNLFIZPukJNmK"
 
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
@@ -43,7 +47,6 @@ def get_tweet_info(id):
         profile_picture = profile_picture.convert("RGB")
     try:
         quoted_id = replied_to.quoted_status.id
-        print(quoted_id)
     except:
         quoted_id = None
     try:

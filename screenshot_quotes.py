@@ -525,4 +525,7 @@ def screenshot_quote_dark(id):
             ),
         )
     return img
-
+    
+#https://twitter.com/mayemusk/status/?t=XcTXXMAcKpFml_Gs0ZTlLg&s=19
+#img=screenshot_quote_light(1520733480375754754)
+#img.save("gg.jpg")
