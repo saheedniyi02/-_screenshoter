@@ -393,7 +393,7 @@ def screenshot_quote_dark(id):
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
-        space_text = 45 * no_lines * 1.2
+        space_text = 45 * no_lines * 1.5
     space_profile = 186
     if no_lines_quoted < 4:
         space_text_quoted = 45 * no_lines_quoted *2
