@@ -89,8 +89,7 @@ def get_reply_history(id):
 
 
 def create_total_height(reply_history):
-    width = 1300
-    border_top_bottom = 120
+    border_top_bottom = 100
     space_profile = 186
     total_height = int(2 * border_top_bottom)
     for tweet in reply_history:
@@ -98,11 +97,24 @@ def create_total_height(reply_history):
         text, no_lines = find_n(text, text_range)
         tweet_height = 45 * no_lines * 1.25
         total_height = int(total_height + space_profile + tweet_height + 50)
+        if tweet["attached_image"]:
+            attached_image_height = 1200
+            error = 50
+            total_height = total_height + attached_image_height + error
     return total_height
 
 
 def create_screenshot_light(tweet_info, identify, increase_height, img):
-    profile_name, username, user_verified, text, profile_pics, date, text_range = (
+    (
+        profile_name,
+        username,
+        user_verified,
+        text,
+        profile_pics,
+        date,
+        text_range,
+        attached_image,
+    ) = (
         tweet_info["name"],
         tweet_info["username"],
         tweet_info["verified"],
@@ -110,6 +122,7 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
         tweet_info["image"],
         tweet_info["date"],
         tweet_info["text_range"],
+        tweet_info["attached_image"],
     )
     if identify == 0:
         border_top_bottom = 0
@@ -118,15 +131,42 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
-    space_text = 45 * no_lines * 1.25
+    if no_lines <= 1:
+        space_text = 45 * no_lines * 3.5
+    elif no_lines < 3:
+        space_text = 45 * no_lines * 2.6
+    elif no_lines < 4:
+        space_text = 45 * no_lines * 2
+    elif no_lines >= 8:
+        space_text = 45 * no_lines * 1.35
+    else:
+        space_text = 45 * no_lines * 1.5
     space_profile = 185
-    tweet_height = int(space_text + border_top_bottom + space_profile + 50)
+    if attached_image:
+        attached_image_height = 1200
+        attached_image_width = 1150
+        attached_image = attached_image.resize(
+            (attached_image_width, attached_image_height)
+        )
+        error = 50
+    else:
+        attached_image_height = 0
+        error = 0
+
+    tweet_height = int(
+        space_text + border_top_bottom + space_profile + error + attached_image_height
+    )
+    space_profile = 185
+
     # date_height = int(space_text + border_top_bottom + space_profile + 5)
     profile_name_height = 120 + increase_height
     username_height = 185 + increase_height
     profile_pics_height = 120 + increase_height
     verified_height = 128 + increase_height
     text_height = 290 + increase_height
+    attached_image_loc = int(
+        space_text + border_top_bottom + space_profile + 15 + increase_height
+    )
     drawer = ImageDraw.Draw(img)
     drawer_emoji = Pilmoji(img)
     font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 50)
@@ -150,13 +190,32 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
     )
     # drawer.text((70, date_height), date, font=font_username, fill=(134, 135, 134))
     img.paste(profile_pics, (70, profile_pics_height), mask)
+    if attached_image:
+        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (attached_image_width, attached_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
         img.paste(verified, (int(240 + 28.15 * (profile_name_score)), verified_height))
     return img, tweet_height
 
 
 def create_screenshot_dark(tweet_info, identify, increase_height, img):
-    profile_name, username, user_verified, text, profile_pics, date, text_range = (
+    (
+        profile_name,
+        username,
+        user_verified,
+        text,
+        profile_pics,
+        date,
+        text_range,
+        attached_image,
+    ) = (
         tweet_info["name"],
         tweet_info["username"],
         tweet_info["verified"],
@@ -164,6 +223,7 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
         tweet_info["image"],
         tweet_info["date"],
         tweet_info["text_range"],
+        tweet_info["attached_image"],
     )
     if identify == 0:
         border_top_bottom = 0
@@ -172,15 +232,42 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
-    space_text = 45 * no_lines * 1.25
+    if no_lines <= 1:
+        space_text = 45 * no_lines * 3.5
+    elif no_lines < 3:
+        space_text = 45 * no_lines * 2.6
+    elif no_lines < 4:
+        space_text = 45 * no_lines * 2
+    elif no_lines >= 8:
+        space_text = 45 * no_lines * 1.35
+    else:
+        space_text = 45 * no_lines * 1.5
+    print(space_text)
+    print(no_lines)
     space_profile = 185
-    tweet_height = int(space_text + border_top_bottom + space_profile + 50)
+    if attached_image:
+        attached_image_height = 1200
+        attached_image_width = 1150
+        attached_image = attached_image.resize(
+            (attached_image_width, attached_image_height)
+        )
+        error = 50
+    else:
+        attached_image_height = 0
+        error = 0
+
+    tweet_height = int(
+        space_text + border_top_bottom + space_profile + error + attached_image_height
+    )
     # date_height = int(space_text + border_top_bottom + space_profile + 5)
     profile_name_height = 120 + increase_height
     username_height = 185 + increase_height
     profile_pics_height = 120 + increase_height
     verified_height = 128 + increase_height
     text_height = 290 + increase_height
+    attached_image_loc = int(
+        space_text + border_top_bottom + space_profile + 15 + increase_height
+    )
     drawer = ImageDraw.Draw(img)
     drawer_emoji = Pilmoji(img)
     font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 50)
@@ -204,6 +291,16 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     )
     # drawer.text((70, date_height), date, font=font_username, fill=(196, 195, 194))
     img.paste(profile_pics, (70, profile_pics_height), mask)
+    if attached_image:
+        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
+        mask_drawer = ImageDraw.Draw(mask_image)
+        mask_drawer.rounded_rectangle(
+            [(0, 0), (attached_image_width, attached_image_height)],
+            fill=255,
+            width=2,
+            radius=40,
+        )
+        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
         img.paste(
             verified_dark, (int(240 + 28.15 * (profile_name_score)), verified_height)

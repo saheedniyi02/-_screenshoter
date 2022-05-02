@@ -85,8 +85,8 @@ def find_n(text, text_range):
             txt_lines, no_lines = clean_text(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
-    new_text_stripped= new_text.rstrip('\n')
-    total_lines=total_lines-(len(new_text)-len(new_text_stripped))/2
+    new_text_stripped = new_text.rstrip("\n")
+    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) / 2
     return new_text, total_lines
 
 
@@ -103,8 +103,8 @@ def find_n_quotes(text, text_range):
             txt_lines, no_lines = clean_text_quotes(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
-    new_text_stripped= new_text.rstrip('\n')
-    total_lines=total_lines-(len(new_text)-len(new_text_stripped))/2
+    new_text_stripped = new_text.rstrip("\n")
+    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) / 2
     return new_text, total_lines
 
 
@@ -186,10 +186,15 @@ def screenshot_quote_light(id):
     else:
         space_text = 45 * no_lines * 1.5
     space_profile = 186
-    if no_lines_quoted < 4:
+
+    if no_lines_quoted <= 1:
+        space_text_quoted = 45 * no_lines_quoted * 3.5
+    elif no_lines_quoted < 4:
         space_text_quoted = 45 * no_lines_quoted * 2
-    elif no_lines_quoted >= 4:
-        space_text_quoted = 45 * no_lines_quoted * 1.4
+    elif no_lines_quoted >= 8:
+        space_text_quoted = 45 * no_lines_quoted * 1.35
+    else:
+        space_text_quoted = 45 * no_lines_quoted * 1.5
     border_top_bottom_quoted = 60
     attached_image_loc = int(space_text + border_top_bottom + space_profile)
     quoted_start_height = int(
@@ -395,10 +400,15 @@ def screenshot_quote_dark(id):
     else:
         space_text = 45 * no_lines * 1.5
     space_profile = 186
-    if no_lines_quoted < 4:
-        space_text_quoted = 45 * no_lines_quoted *2
-    elif no_lines_quoted >= 4:
-        space_text_quoted = 45 * no_lines_quoted * 1.4
+
+    if no_lines_quoted <= 1:
+        space_text_quoted = 45 * no_lines_quoted * 3.5
+    elif no_lines_quoted < 4:
+        space_text_quoted = 45 * no_lines_quoted * 2
+    elif no_lines_quoted >= 8:
+        space_text_quoted = 45 * no_lines_quoted * 1.35
+    else:
+        space_text_quoted = 45 * no_lines_quoted * 1.5
     border_top_bottom_quoted = 60
     attached_image_loc = int(space_text + border_top_bottom + space_profile)
     quoted_start_height = int(
@@ -525,7 +535,3 @@ def screenshot_quote_dark(id):
             ),
         )
     return img
-    
-#https://twitter.com/mayemusk/status/?t=XcTXXMAcKpFml_Gs0ZTlLg&s=19
-#img=screenshot_quote_light(1520733480375754754)
-#img.save("gg.jpg")

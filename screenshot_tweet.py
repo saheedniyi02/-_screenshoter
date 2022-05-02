@@ -23,7 +23,6 @@ verified_dark = verified_dark.resize((45, 45))
 my_username = "@_screenshoter"
 
 
-
 def clean_text(text):
     words_per_line = 43
     no_lines = (len(text) // words_per_line) + 1
@@ -46,6 +45,7 @@ def clean_text(text):
         lines.append(line)
         words_per_line = 43
 
+
 def find_n(text, text_range):
     text = text[text_range[0] :]
     text_split = text.split("\n")
@@ -59,11 +59,9 @@ def find_n(text, text_range):
             txt_lines, no_lines = clean_text(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
-    new_text_stripped= new_text.rstrip('\n')
-    total_lines=total_lines-(len(new_text)-len(new_text_stripped))/2
-    return new_text, total_lines
-
-
+    new_text_stripped = new_text.rstrip("\n")
+    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) / 2
+    return new_text, round(total_lines)
 
 
 def create_tweet_screenshot_light(id):
@@ -101,8 +99,10 @@ def create_tweet_screenshot_light(id):
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
-    if no_lines <= 2:
-        space_text = 45 * no_lines * 2.9
+    if no_lines <= 1:
+        space_text = 45 * no_lines * 3.5
+    elif no_lines < 4:
+        space_text = 45 * no_lines * 2
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
@@ -195,8 +195,10 @@ def create_tweet_screenshot_dark(id):
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
-    if no_lines <= 2:
-        space_text = 45 * no_lines * 2.9
+    if no_lines <= 1:
+        space_text = 45 * no_lines * 3.5
+    elif no_lines < 4:
+        space_text = 45 * no_lines * 2
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
@@ -254,7 +256,3 @@ def create_tweet_screenshot_dark(id):
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
     return img
-#https://twitter.com/folkeiry/status/1520460995763884034?t=r1fXX2ByXQnLn-1RMnB6Xw&s=19https://twitter.com/PoojaMedia/status/?t=7g4z-5RrWBTY31MScAwNeg&s=19https://twitter.com/saheedniyi_02/status/1520793930446610433?t=4g2C47OvYbwK2n11Y_vDXA&s=19https://twitter.com/yomibro22/status/?t=bRH7FUE0s5a_b21p2QrhaA&s=19
-
-img = create_tweet_screenshot_dark(1519931520957489153)
-img.save("img.jpg")
