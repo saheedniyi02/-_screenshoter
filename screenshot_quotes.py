@@ -547,3 +547,5 @@ def screenshot_quote_dark(id):
             ),
         )
     return img
+img=screenshot_quote_dark(1521233617225138176)
+img.save("quote.jpg")

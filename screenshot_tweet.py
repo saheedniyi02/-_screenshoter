@@ -100,7 +100,9 @@ def create_tweet_screenshot_light(id):
     width = 1300
     border_top_bottom = 120
     if no_lines <= 1:
-        space_text = 45 * no_lines * 3.5
+        space_text = 100
+    elif no_lines < 3:
+        space_text = 45 * no_lines * 2.6
     elif no_lines < 4:
         space_text = 45 * no_lines * 2
     elif no_lines >= 8:
@@ -195,8 +197,11 @@ def create_tweet_screenshot_dark(id):
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
+    print(no_lines)
     if no_lines <= 1:
-        space_text = 45 * no_lines * 3.5
+        space_text = 100
+    elif no_lines < 3:
+        space_text = 45 * no_lines * 2.6
     elif no_lines < 4:
         space_text = 45 * no_lines * 2
     elif no_lines >= 8:
@@ -256,3 +261,7 @@ def create_tweet_screenshot_dark(id):
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
     return img
+
+
+img=create_tweet_screenshot_light(1519524654976839685)
+img.save("x.jpg")
