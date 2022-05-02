@@ -89,14 +89,23 @@ def get_reply_history(id):
 
 
 def create_total_height(reply_history):
-    border_top_bottom = 100
+    border_top_bottom = 120
     space_profile = 186
     total_height = int(2 * border_top_bottom)
     for tweet in reply_history:
         text, text_range = tweet["text"], tweet["text_range"]
         text, no_lines = find_n(text, text_range)
-        tweet_height = 45 * no_lines * 1.25
-        total_height = int(total_height + space_profile + tweet_height + 50)
+        if no_lines <= 1:
+        	space_text = 45 * no_lines * 3.5
+        elif no_lines < 3:
+        	space_text = 45 * no_lines * 2.6
+        elif no_lines < 4:
+        	space_text = 45 * no_lines * 2
+        elif no_lines >= 8:
+        	space_text = 45 * no_lines * 1.35
+        else:
+        	space_text = 45 * no_lines * 1.5
+        total_height = int(total_height + space_profile + space_text + 50)
         if tweet["attached_image"]:
             attached_image_height = 1200
             error = 50
@@ -242,8 +251,6 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
         space_text = 45 * no_lines * 1.35
     else:
         space_text = 45 * no_lines * 1.5
-    print(space_text)
-    print(no_lines)
     space_profile = 185
     if attached_image:
         attached_image_height = 1200
@@ -366,3 +373,4 @@ def create_replies_screenshot_dark(id):
         increase_height = increase_height + tweet_height
         identify = identify + 1
     return img
+
