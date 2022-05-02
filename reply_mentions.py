@@ -63,22 +63,22 @@ def reply_mentions():
                 and ("screenshot" in full_text)
             ):
                 if "light" in full_text:
-                    if (" conversation " in full_text) or (" all " in full_text):
+                    if ("conversation" in full_text) or ("all" in full_text):
                         image = create_replies_screenshot_light(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_light(replied_to_id)
-                    elif (" quotes " in full_text) or (" quote " in full_text):
+                    elif ("quotes" in full_text) or ("quote" in full_text):
                         image = screenshot_quote_light(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_light(replied_to_id)
                     else:
                         image = create_tweet_screenshot_light(replied_to_id)
                 else:
-                    if (" conversation " in full_text) or (" all " in full_text):
+                    if ("conversation" in full_text) or ("all" in full_text):
                         image = create_replies_screenshot_dark(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_dark(replied_to_id)
-                    elif (" quotes " in full_text) or (" quote " in full_text):
+                    elif ("quotes" in full_text) or ("quote" in full_text):
                         image = screenshot_quote_dark(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_dark(replied_to_id)
