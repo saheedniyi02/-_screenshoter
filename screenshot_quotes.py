@@ -249,8 +249,7 @@ def screenshot_quote_light(id):
         fill=(0, 0, 0),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1,
-        emoji_position_offset=(10, 15),
+        emoji_scale_factor=1.1,
     )
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(0, 0, 0))
     drawer.text((240, 185), username, font=font_username, fill=(134, 135, 134))
@@ -277,8 +276,7 @@ def screenshot_quote_light(id):
         fill=(0, 0, 0),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1,
-        emoji_position_offset=(10, 15),
+        emoji_scale_factor=1.1,
     )
     drawer_emoji.text(
         (340, quoted_start_height + border_top_bottom_quoted + 10),
@@ -466,8 +464,7 @@ def screenshot_quote_dark(id):
         fill=(255, 255, 255),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1,
-        emoji_position_offset=(10, 15),
+        emoji_scale_factor=1.1,
     )
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(255, 255, 255))
     drawer.text((240, 185), username, font=font_username, fill=(196, 195, 194))
@@ -494,8 +491,7 @@ def screenshot_quote_dark(id):
         fill=(255, 255, 255),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1,
-        emoji_position_offset=(10, 15),
+        emoji_scale_factor=1.1,
     )
     drawer_emoji.text(
         (340, quoted_start_height + border_top_bottom_quoted + 10),
