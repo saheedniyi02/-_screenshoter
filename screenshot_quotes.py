@@ -82,7 +82,7 @@ def find_n(text, text_range):
             new_text = new_text + "\n"
             total_lines = total_lines + 1
         else:
-            txt_lines, no_lines = clean_text_quotes(txt)
+            txt_lines, no_lines = clean_text(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
     new_text_stripped = new_text.rstrip("\n")
