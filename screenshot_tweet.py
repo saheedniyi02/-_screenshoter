@@ -240,7 +240,7 @@ def create_tweet_screenshot_dark(id):
         fill=(255, 255, 255),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1,
+        emoji_scale_factor=1.1,
     )
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(255, 255, 255))
     drawer.text((240, 185), username, font=font_username, fill=(196, 195, 194))
