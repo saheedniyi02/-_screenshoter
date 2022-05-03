@@ -23,7 +23,7 @@ my_username = "@_screenshoter"
 
 
 def clean_text_replies(text, i, length):
-    words_per_line = 46
+    words_per_line = 49
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -42,7 +42,7 @@ def clean_text_replies(text, i, length):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 46
+        words_per_line = 49
 
 
 def find_n(text, text_range):
@@ -95,17 +95,19 @@ def create_total_height(reply_history):
     for tweet in reply_history:
         text, text_range = tweet["text"], tweet["text_range"]
         text, no_lines = find_n(text, text_range)
-        if no_lines <= 1:
-            space_text = 45 * no_lines * 3.5
-        elif no_lines < 3:
-            space_text = 45 * no_lines * 2.6
-        elif no_lines < 4:
-            space_text = 45 * no_lines * 2
-        elif no_lines >= 8:
-            space_text = 45 * no_lines * 1.35
-        else:
-            space_text = 45 * no_lines * 1.5
-        total_height = int(total_height + space_profile + space_text)
+        if no_lines == 1:
+        	space_text = 100
+        elif no_lines == 2:
+        	space_text = 45 * no_lines * 2
+        elif no_lines==3:
+        	space_text = 45 * no_lines * 1.6
+        elif no_lines==4:
+        	space_text=45*no_lines*1.5
+        elif no_lines>4:
+        	space_text=45*no_lines*1.45
+        elif no_lines>9:
+        	space_text=45*no_lines*1.4
+        total_height = int(total_height + space_profile + space_text+50)
         if tweet["attached_image"]:
             attached_image_height = 1200
             error = 50
@@ -136,22 +138,24 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
         tweet_info["attached_image"],
     )
     if identify == 0:
-        border_top_bottom = 0
+        border_top_bottom = 120
     else:
-        border_top_bottom = 0
+        border_top_bottom = 50
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
-    if no_lines <= 1:
-        space_text = 45 * no_lines * 3.5
-    elif no_lines < 3:
-        space_text = 45 * no_lines * 2.6
-    elif no_lines < 4:
+    if no_lines == 1:
+        space_text = 100
+    elif no_lines == 2:
         space_text = 45 * no_lines * 2
-    elif no_lines >= 8:
-        space_text = 45 * no_lines * 1.35
-    else:
-        space_text = 45 * no_lines * 1.5
+    elif no_lines==3:
+    	space_text = 45 * no_lines * 1.6
+    elif no_lines==4:
+    	space_text=45*no_lines*1.5
+    elif no_lines>4:
+    	space_text=45*no_lines*1.45
+    elif no_lines>9:
+    	space_text=45*no_lines*1.4
     space_profile = 185
     if attached_image:
         attached_image_height = 1200
@@ -234,22 +238,24 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
         tweet_info["attached_image"],
     )
     if identify == 0:
-        border_top_bottom = 0
+        border_top_bottom = 120
     else:
-        border_top_bottom = 0
+        border_top_bottom = 50
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
-    if no_lines <= 1:
-        space_text = 45 * no_lines * 3.5
-    elif no_lines < 3:
-        space_text = 45 * no_lines * 2.6
-    elif no_lines < 4:
+    if no_lines == 1:
+        space_text = 100
+    elif no_lines == 2:
         space_text = 45 * no_lines * 2
-    elif no_lines >= 8:
-        space_text = 45 * no_lines * 1.35
-    else:
-        space_text = 45 * no_lines * 1.5
+    elif no_lines==3:
+    	space_text = 45 * no_lines * 1.6
+    elif no_lines==4:
+    	space_text=45*no_lines*1.5
+    elif no_lines>4:
+    	space_text=45*no_lines*1.45
+    elif no_lines>9:
+    	space_text=45*no_lines*1.4
     space_profile = 185
     if attached_image:
         attached_image_height = 1200
@@ -270,7 +276,7 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     username_height = 185 + increase_height
     profile_pics_height = 120 + increase_height
     verified_height = 128 + increase_height
-    text_height = 290 + increase_height
+    text_height = 305+ increase_height
     attached_image_loc = int(
         space_text + border_top_bottom + space_profile + 15 + increase_height
     )

@@ -24,7 +24,7 @@ my_username = "@_screenshoter"
 
 
 def clean_text(text):
-    words_per_line = 43
+    words_per_line = 47
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -43,7 +43,7 @@ def clean_text(text):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 43
+        words_per_line = 47
 
 
 def find_n(text, text_range):
@@ -60,8 +60,8 @@ def find_n(text, text_range):
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
     new_text_stripped = new_text.rstrip("\n")
-    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) / 2
-    return new_text, round(total_lines)
+    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) +1
+    return new_text, total_lines
 
 
 def create_tweet_screenshot_light(id):
@@ -99,16 +99,18 @@ def create_tweet_screenshot_light(id):
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
-    if no_lines <= 1:
+    if no_lines == 1:
         space_text = 100
-    elif no_lines < 3:
-        space_text = 45 * no_lines * 2.6
-    elif no_lines < 4:
+    elif no_lines == 2:
         space_text = 45 * no_lines * 2
-    elif no_lines >= 8:
-        space_text = 45 * no_lines * 1.35
-    else:
-        space_text = 45 * no_lines * 1.5
+    elif no_lines==3:
+    	space_text = 45 * no_lines * 1.6
+    elif no_lines==4:
+    	space_text=45*no_lines*1.5
+    elif no_lines>4:
+    	space_text=45*no_lines*1.45
+    elif no_lines>9:
+    	space_text=45*no_lines*1.4
     space_profile = 186
     attached_image_loc = int(space_text + border_top_bottom + space_profile + 10)
     date_height = int(
@@ -196,17 +198,18 @@ def create_tweet_screenshot_dark(id):
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
-    print(no_lines)
-    if no_lines <= 1:
+    if no_lines == 1:
         space_text = 100
-    elif no_lines < 3:
-        space_text = 45 * no_lines * 2.6
-    elif no_lines < 4:
+    elif no_lines == 2:
         space_text = 45 * no_lines * 2
-    elif no_lines >= 8:
-        space_text = 45 * no_lines * 1.35
-    else:
-        space_text = 45 * no_lines * 1.5
+    elif no_lines==3:
+    	space_text = 45 * no_lines * 1.6
+    elif no_lines==4:
+    	space_text=45*no_lines*1.5
+    elif no_lines>4:
+    	space_text=45*no_lines*1.45
+    elif no_lines>9:
+    	space_text=45*no_lines*1.4
     space_profile = 185
     attached_image_loc = int(space_text + border_top_bottom + space_profile + 10)
     date_height = int(
@@ -259,5 +262,4 @@ def create_tweet_screenshot_dark(id):
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
     return img
-
 

@@ -26,7 +26,7 @@ my_username = "@_screenshoter"
 
 
 def clean_text(text):
-    words_per_line = 43
+    words_per_line = 49
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -45,11 +45,11 @@ def clean_text(text):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 43
+        words_per_line = 49
 
 
 def clean_text_quotes(text):
-    words_per_line = 38
+    words_per_line = 39
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -69,7 +69,7 @@ def clean_text_quotes(text):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 38
+        words_per_line = 39
 
 
 def find_n(text, text_range):
@@ -82,11 +82,11 @@ def find_n(text, text_range):
             new_text = new_text + "\n"
             total_lines = total_lines + 1
         else:
-            txt_lines, no_lines = clean_text(txt)
+            txt_lines, no_lines = clean_text_quotes(txt)
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
     new_text_stripped = new_text.rstrip("\n")
-    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) / 2
+    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) +1
     return new_text, total_lines
 
 
@@ -104,7 +104,7 @@ def find_n_quotes(text, text_range):
             new_text = new_text + txt_lines + "\n"
             total_lines = total_lines + no_lines
     new_text_stripped = new_text.rstrip("\n")
-    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) / 2
+    total_lines = total_lines - (len(new_text) - len(new_text_stripped)) +1
     return new_text, total_lines
 
 
@@ -179,24 +179,33 @@ def screenshot_quote_light(id):
     # dimensions
     width = 1300
     border_top_bottom = 120
-    if no_lines <= 1:
+    if no_lines == 1:
         space_text = 100
-    elif no_lines <= 2:
-        space_text = 45 * no_lines * 1.85
-    elif no_lines >= 8:
-        space_text = 45 * no_lines * 1.35
-    else:
-        space_text = 45 * no_lines * 1.5
+    elif no_lines == 2:
+        space_text = 45 * no_lines * 2
+    elif no_lines==3:
+        space_text = 45 * no_lines * 1.6
+    elif no_lines==4:
+        space_text=45*no_lines*1.5
+    elif no_lines>4:
+        space_text=45*no_lines*1.45
+    elif no_lines>9:
+    	space_text=45*no_lines*1.4
     space_profile = 185
-
-    if no_lines_quoted <= 1:
+    
+    
+    if no_lines_quoted == 1:
         space_text_quoted = 100
-    elif no_lines_quoted <= 2:
-        space_text_quoted = 45 * no_lines_quoted * 1.85
-    elif no_lines_quoted >= 8:
-        space_text_quoted = 45 * no_lines_quoted * 1.35
-    else:
-        space_text_quoted = 45 * no_lines_quoted * 1.5
+    elif no_lines_quoted == 2:
+        space_text_quoted = 45 * no_lines_quoted * 2
+    elif no_lines_quoted==3:
+        space_text_quoted = 45 * no_lines_quoted * 1.6
+    elif no_lines_quoted==4:
+        space_text_quoted=45*no_lines_quoted*1.5
+    elif no_lines_quoted>4:
+        space_text_quoted=45*no_lines_quoted*1.45
+    elif no_lines_quoted>9:
+    	space_text_quoted=45*no_lines_quoted*1.4
     border_top_bottom_quoted = 60
     attached_image_loc = int(space_text + border_top_bottom + space_profile)
     quoted_start_height = int(
@@ -249,7 +258,7 @@ def screenshot_quote_light(id):
         fill=(0, 0, 0),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1.1,
+        emoji_scale_factor=1,
     )
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(0, 0, 0))
     drawer.text((240, 185), username, font=font_username, fill=(134, 135, 134))
@@ -276,7 +285,7 @@ def screenshot_quote_light(id):
         fill=(0, 0, 0),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1.1,
+        emoji_scale_factor=1,
     )
     drawer_emoji.text(
         (340, quoted_start_height + border_top_bottom_quoted + 10),
@@ -393,24 +402,33 @@ def screenshot_quote_dark(id):
     # dimensions
     width = 1300
     border_top_bottom = 120
-    if no_lines <= 1:
+    if no_lines == 1:
         space_text = 100
-    elif no_lines <= 2:
-        space_text = 45 * no_lines * 1.85
-    elif no_lines >= 8:
-        space_text = 45 * no_lines * 1.35
-    else:
-        space_text = 45 * no_lines * 1.5
+    elif no_lines == 2:
+        space_text = 45 * no_lines * 2
+    elif no_lines==3:
+        space_text = 45 * no_lines * 1.6
+    elif no_lines==4:
+        space_text=45*no_lines*1.5
+    elif no_lines>4:
+        space_text=45*no_lines*1.45
+    elif no_lines>9:
+    	space_text=45*no_lines*1.4
     space_profile = 185
-
-    if no_lines_quoted <= 1:
+    
+    
+    if no_lines_quoted == 1:
         space_text_quoted = 100
-    elif no_lines_quoted <= 2:
-        space_text_quoted = 45 * no_lines_quoted * 1.85
-    elif no_lines_quoted >= 8:
-        space_text_quoted = 45 * no_lines_quoted * 1.35
-    else:
-        space_text_quoted = 45 * no_lines_quoted * 1.5
+    elif no_lines_quoted == 2:
+        space_text_quoted = 45 * no_lines_quoted * 2
+    elif no_lines_quoted==3:
+        space_text_quoted = 45 * no_lines_quoted * 1.6
+    elif no_lines_quoted==4:
+        space_text_quoted=45*no_lines_quoted*1.5
+    elif no_lines_quoted>4:
+        space_text_quoted=45*no_lines_quoted*1.45
+    elif no_lines_quoted>9:
+    	space_text_quoted=45*no_lines_quoted*1.4
     border_top_bottom_quoted = 60
     attached_image_loc = int(space_text + border_top_bottom + space_profile)
     quoted_start_height = int(
@@ -491,7 +509,7 @@ def screenshot_quote_dark(id):
         fill=(255, 255, 255),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1.1,
+        emoji_scale_factor=1,
     )
     drawer_emoji.text(
         (340, quoted_start_height + border_top_bottom_quoted + 10),
@@ -535,3 +553,4 @@ def screenshot_quote_dark(id):
             ),
         )
     return img
+    
