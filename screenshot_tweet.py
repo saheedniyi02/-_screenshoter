@@ -142,7 +142,6 @@ def create_tweet_screenshot_light(id):
         fill=(0, 0, 0),
         embedded_color=True,
         emoji_scale_factor=1.1,
-        emoji_position_offset=(10, 15),
     )
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(0, 0, 0))
     drawer.text((240, 185), username, font=font_username, fill=(134, 135, 134))
@@ -242,7 +241,6 @@ def create_tweet_screenshot_dark(id):
         embedded_color=True,
         align="left",
         emoji_scale_factor=1,
-        emoji_position_offset=(10, 15),
     )
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(255, 255, 255))
     drawer.text((240, 185), username, font=font_username, fill=(196, 195, 194))
