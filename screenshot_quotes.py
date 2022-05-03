@@ -179,16 +179,20 @@ def screenshot_quote_light(id):
     # dimensions
     width = 1300
     border_top_bottom = 120
-    if no_lines <= 2:
-        space_text = 45 * no_lines * 1.6
+    if no_lines <= 1:
+        space_text = 100
+    elif no_lines <= 2:
+        space_text = 45 * no_lines * 1.85
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
         space_text = 45 * no_lines * 1.5
     space_profile = 185
 
-    if no_lines_quoted <= 2:
-        space_text_quoted = 45 * no_lines_quoted * 1.6
+    if no_lines_quoted <= 1:
+        space_text_quoted = 100
+    elif no_lines_quoted <= 2:
+        space_text_quoted = 45 * no_lines_quoted * 1.85
     elif no_lines_quoted >= 8:
         space_text_quoted = 45 * no_lines_quoted * 1.35
     else:
@@ -391,16 +395,20 @@ def screenshot_quote_dark(id):
     # dimensions
     width = 1300
     border_top_bottom = 120
-    if no_lines <= 2:
-        space_text = 45 * no_lines * 1.6
+    if no_lines <= 1:
+        space_text = 100
+    elif no_lines <= 2:
+        space_text = 45 * no_lines * 1.85
     elif no_lines >= 8:
         space_text = 45 * no_lines * 1.35
     else:
         space_text = 45 * no_lines * 1.5
     space_profile = 185
 
-    if no_lines_quoted <= 2:
-        space_text_quoted = 45 * no_lines_quoted * 1.6
+    if no_lines_quoted <= 1:
+        space_text_quoted = 100
+    elif no_lines_quoted <= 2:
+        space_text_quoted = 45 * no_lines_quoted * 1.85
     elif no_lines_quoted >= 8:
         space_text_quoted = 45 * no_lines_quoted * 1.35
     else:
@@ -531,7 +539,3 @@ def screenshot_quote_dark(id):
             ),
         )
     return img
-
-
-img = screenshot_quote_dark(1521256113882210304)
-img.save("quote.jpg")
