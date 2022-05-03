@@ -261,5 +261,3 @@ def create_tweet_screenshot_dark(id):
     return img
 
 
-img=create_tweet_screenshot_light(1519524654976839685)
-img.save("x.jpg")
