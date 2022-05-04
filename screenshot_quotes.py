@@ -256,7 +256,7 @@ def screenshot_quote_light(id):
         font=font_my_username,
         fill=(209, 205, 205),
     )
-    drawerl_emoji.text(
+    drawer_emoji.text(
         (70, 305),
         text,
         font=font,
