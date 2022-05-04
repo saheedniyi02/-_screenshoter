@@ -266,6 +266,7 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     elif no_lines>9:
     	space_text=45*no_lines*1.4
     space_profile = 185
+    default_width=1150
     if attached_image:
     	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
     	attached_image=attached_image.resize((default_width,attached_image_height))
