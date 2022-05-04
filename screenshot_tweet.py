@@ -24,7 +24,7 @@ my_username = "@_screenshoter"
 
 
 def clean_text(text):
-    words_per_line = 45
+    words_per_line = 47
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -43,7 +43,7 @@ def clean_text(text):
         line = remove_start_space(line)
         line = line + "\n"
         lines.append(line)
-        words_per_line = 45
+        words_per_line = 47
 
 
 def find_n(text, text_range):
@@ -75,6 +75,8 @@ def create_tweet_screenshot_light(id):
         date,
         text_range,
         attached_image,
+        attached_image_width,
+        attached_image_height
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -84,17 +86,16 @@ def create_tweet_screenshot_light(id):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["attached_image"],
+        tweet_info["width"],
+        tweet_info["height"]
     )
-
-    text, no_lines = find_n(text, text_range)
+    default_width=1150
     if attached_image:
-        attached_image_height = 1300
-        attached_image_width = 1150
-        attached_image = attached_image.resize(
-            (attached_image_width, attached_image_height)
-        )
-    else:
-        attached_image_height = 0
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    
+    text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
@@ -175,6 +176,8 @@ def create_tweet_screenshot_dark(id):
         date,
         text_range,
         attached_image,
+        attached_image_width,
+        attached_image_height
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -184,16 +187,15 @@ def create_tweet_screenshot_dark(id):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["attached_image"],
+        tweet_info["width"],
+        tweet_info["height"]
     )
-    text, no_lines = find_n(text, text_range)
+    default_width=1150
     if attached_image:
-        attached_image_height = 1300
-        attached_image_width = 1150
-        attached_image = attached_image.resize(
-            (attached_image_width, attached_image_height)
-        )
-    else:
-        attached_image_height = 0
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
     width = 1300
@@ -262,4 +264,3 @@ def create_tweet_screenshot_dark(id):
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
     return img
-

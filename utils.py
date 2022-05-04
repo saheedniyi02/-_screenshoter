@@ -48,8 +48,11 @@ def get_tweet_info(id):
     try:
         image_url = replied_to.entities["media"][0]["media_url_https"]
         attached_image = Image.open(urlopen(image_url))
+        width,height=attached_image.size
     except:
         attached_image = None
+        width=0
+        height=0
 
     return {
         "name": user_info.name,
@@ -63,6 +66,8 @@ def get_tweet_info(id):
         "text_range": replied_to.display_text_range,
         "quoted_id": quoted_id,
         "attached_image": attached_image,
+        "width":width,
+        "height":height
     }
 
 

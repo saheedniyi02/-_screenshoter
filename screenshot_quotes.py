@@ -120,6 +120,8 @@ def screenshot_quote_light(id):
         text_range,
         quoted_id,
         attached_image,
+        attached_image_width,
+        attached_image_height
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -130,6 +132,8 @@ def screenshot_quote_light(id):
         tweet_info["text_range"],
         tweet_info["quoted_id"],
         tweet_info["attached_image"],
+        tweet_info["width"],
+        tweet_info["height"]
     )
     if quoted_id == None:
         return None
@@ -144,6 +148,8 @@ def screenshot_quote_light(id):
         text_range_quoted,
         _,
         quoted_image,
+        quoted_image_width,
+        quoted_image_height
     ) = (
         quoted_info["name"],
         quoted_info["username"],
@@ -154,22 +160,21 @@ def screenshot_quote_light(id):
         quoted_info["text_range"],
         quoted_info["quoted_id"],
         quoted_info["attached_image"],
+        quoted_info["width"],
+        quoted_info["height"]
     )
     text, no_lines = find_n(text, text_range)
+    default_width=1150
     if attached_image:
-        attached_image_height = 1300
-        attached_image_width = 1150
-        attached_image = attached_image.resize(
-            (attached_image_width, attached_image_height)
-        )
-    else:
-        attached_image_height = 0
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    default_width_quoted=1050	
+    	
     if quoted_image:
-        quoted_image_height = 1070
-        quoted_image_width = 1050
-        quoted_image = quoted_image.resize((quoted_image_width, quoted_image_height))
-    else:
-        quoted_image_height = 0
+        quoted_image_height=int(default_width_quoted*(quoted_image_height/quoted_image_width))
+        quoted_image = quoted_image.resize((default_width_quoted, quoted_image_height))
+        quoted_image_width=default_width_quoted
     quote_text, no_lines_quoted = find_n_quotes(quote_text, text_range_quoted)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
@@ -251,7 +256,7 @@ def screenshot_quote_light(id):
         font=font_my_username,
         fill=(209, 205, 205),
     )
-    drawer_emoji.text(
+    drawerl_emoji.text(
         (70, 305),
         text,
         font=font,
@@ -342,6 +347,8 @@ def screenshot_quote_dark(id):
         text_range,
         quoted_id,
         attached_image,
+        attached_image_width,
+        attached_image_height
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -352,6 +359,8 @@ def screenshot_quote_dark(id):
         tweet_info["text_range"],
         tweet_info["quoted_id"],
         tweet_info["attached_image"],
+        tweet_info["width"],
+        tweet_info["height"]
     )
     if quoted_id == None:
         return None
@@ -366,6 +375,8 @@ def screenshot_quote_dark(id):
         text_range_quoted,
         _,
         quoted_image,
+        quoted_image_width,
+        quoted_image_height
     ) = (
         quoted_info["name"],
         quoted_info["username"],
@@ -376,23 +387,21 @@ def screenshot_quote_dark(id):
         quoted_info["text_range"],
         quoted_info["quoted_id"],
         quoted_info["attached_image"],
+        quoted_info["width"],
+        quoted_info["height"]
     )
     text, no_lines = find_n(text, text_range)
+    default_width=1150
     if attached_image:
-        attached_image_height = 1150
-        attached_image_width = 1150
-        attached_image = attached_image.resize(
-            (attached_image_width, attached_image_height)
-        )
-    else:
-        attached_image_height = 0
-
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    default_width_quoted=1050	
+    	
     if quoted_image:
-        quoted_image_height = 1070
-        quoted_image_width = 1050
-        quoted_image = quoted_image.resize((quoted_image_width, quoted_image_height))
-    else:
-        quoted_image_height = 0
+        quoted_image_height=int(default_width_quoted*(quoted_image_height/quoted_image_width))
+        quoted_image = quoted_image.resize((default_width_quoted, quoted_image_height))
+        quoted_image_width=default_width_quoted
     quote_text, no_lines_quoted = find_n_quotes(quote_text, text_range_quoted)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
@@ -509,7 +518,7 @@ def screenshot_quote_dark(id):
         fill=(255, 255, 255),
         embedded_color=True,
         align="left",
-        emoji_scale_factor=1,
+        emoji_scale_factor=1
     )
     drawer_emoji.text(
         (340, quoted_start_height + border_top_bottom_quoted + 10),

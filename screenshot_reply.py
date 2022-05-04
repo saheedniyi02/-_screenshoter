@@ -93,7 +93,7 @@ def create_total_height(reply_history):
     space_profile = 186
     total_height = int(2 * border_top_bottom)
     for tweet in reply_history:
-        text, text_range = tweet["text"], tweet["text_range"]
+        text, text_range,attached_image_width,attached_image_height = tweet["text"], tweet["text_range"],tweet["width"],tweet["height"]
         text, no_lines = find_n(text, text_range)
         if no_lines == 1:
         	space_text = 100
@@ -108,10 +108,12 @@ def create_total_height(reply_history):
         elif no_lines>9:
         	space_text=45*no_lines*1.4
         total_height = int(total_height + space_profile + space_text+50)
+        
         if tweet["attached_image"]:
-            attached_image_height = 1200
-            error = 50
-            total_height = total_height + attached_image_height + error
+        	default_width=1150
+        	error=50
+        	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+        	total_height = total_height + attached_image_height + error
         else:
             pass
     return total_height
@@ -127,6 +129,8 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
         date,
         text_range,
         attached_image,
+        attached_image_width,
+        attached_image_height
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -136,6 +140,8 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["attached_image"],
+        tweet_info["width"],
+        tweet_info["height"]
     )
     if identify == 0:
         border_top_bottom = 120
@@ -157,13 +163,12 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
     elif no_lines>9:
     	space_text=45*no_lines*1.4
     space_profile = 185
+    default_width=1150
     if attached_image:
-        attached_image_height = 1200
-        attached_image_width = 1150
-        attached_image = attached_image.resize(
-            (attached_image_width, attached_image_height)
-        )
-        error = 50
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    	error = 50
     else:
         attached_image_height = 0
         error = 0
@@ -227,6 +232,8 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
         date,
         text_range,
         attached_image,
+        attached_image_width,
+        attached_image_height
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -236,6 +243,8 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["attached_image"],
+        tweet_info["width"],
+        tweet_info["height"]
     )
     if identify == 0:
         border_top_bottom = 120
@@ -258,12 +267,10 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     	space_text=45*no_lines*1.4
     space_profile = 185
     if attached_image:
-        attached_image_height = 1200
-        attached_image_width = 1150
-        attached_image = attached_image.resize(
-            (attached_image_width, attached_image_height)
-        )
-        error = 50
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    	error = 50
     else:
         attached_image_height = 0
         error = 0
@@ -324,7 +331,7 @@ def create_replies_screenshot_light(id):
     if len(reply_history) == 1:
         return None
     total_height = create_total_height(reply_history)
-    width = 1250
+    width = 1300
     img = Image.new(mode="RGB", size=(width, total_height), color=(256, 256, 256))
     drawer = ImageDraw.Draw(img)
     drawer.rectangle(
@@ -354,7 +361,7 @@ def create_replies_screenshot_dark(id):
     if len(reply_history) == 1:
         return None
     total_height = create_total_height(reply_history)
-    width = 1250
+    width = 1300
     img = Image.new(mode="RGB", size=(width, total_height), color=(0, 0, 0))
     drawer = ImageDraw.Draw(img)
     drawer.rectangle(
