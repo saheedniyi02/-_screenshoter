@@ -46,7 +46,7 @@ def get_mention_id(mention):
 
 def reply_mentions():
     count = 5
-    reply = "Your screenshot can be found below\n\nRemember 'all' command gets the last 6 tweets in the thread,'quote' gets a tweet and the tweet it is quoting 😁"
+    reply = "Your screenshot can be found below😁!\n\nRemember your commands,\n 'all' commands gets the last 6 tweets in the thread.\n'quote' gets a tweet and the tweet it is quoting 😁.\n\nAdd 'light' to your request for light mode⬜"
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
