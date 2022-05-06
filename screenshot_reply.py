@@ -65,7 +65,7 @@ def find_n(text, text_range):
 
 def get_reply_history(id):
     reply_history = []
-    max_conversation = 6
+    max_conversation = 10
     for i in range(max_conversation):
         if i == 0:
             tweet_info = get_tweet_info(id)
