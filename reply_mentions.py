@@ -15,9 +15,6 @@ ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 
-
-
-
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
     consumer_secret=API_SECRET_KEY,
@@ -46,6 +43,7 @@ def get_mention_id(mention):
 
 
 def reply_mentions():
+    bot_name = "_screenshoter"
     count = 5
     reply = "Your screenshot can be found below😁!\n\nRemember your commands,\n 'all' command gets the last 6 tweets in the thread.\n'quote' gets a tweet and the tweet it is quoting 😁.\n\nAdd 'light' to your request for light mode⬜"
     mentions = api.mentions_timeline(
@@ -62,10 +60,14 @@ def reply_mentions():
             if (
                 (f"{mention_id}\n" not in replied_ids_list)
                 and ("screenshot" in full_text)
+                and (author != bot_name)
             ):
-                print(1)
                 if "light" in full_text:
-                    if ("conversation" in full_text) or ("all" in full_text) or ("thread" in full_text):
+                    if (
+                        ("conversation" in full_text)
+                        or ("all" in full_text)
+                        or ("thread" in full_text)
+                    ):
                         image = create_replies_screenshot_light(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_light(replied_to_id)
@@ -76,7 +78,11 @@ def reply_mentions():
                     else:
                         image = create_tweet_screenshot_light(replied_to_id)
                 else:
-                    if ("conversation" in full_text) or ("all" in full_text) or ("thread" in full_text):
+                    if (
+                        ("conversation" in full_text)
+                        or ("all" in full_text)
+                        or ("thread" in full_text)
+                    ):
                         image = create_replies_screenshot_dark(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_dark(replied_to_id)
@@ -87,26 +93,36 @@ def reply_mentions():
                     else:
                         image = create_tweet_screenshot_dark(replied_to_id)
                 if not isinstance(image, list):
-                	image.save("screenshot.jpg")
-                	media = api.media_upload(filename="screenshot.jpg")
-                	response=api.update_status(status=f"@{author} {reply} \n",in_reply_to_status_id=str(mention_id),media_ids=[media.media_id_string],)
-                	replied_ids = open("assets/replied_ids.txt", "a")
-                	replied_ids.write(f"{mention_id}\n")
-                	replied_ids.write(f"{response.id}\n")
-                	replied_ids.close()
-                	print(mention_id)
+                    image.save("screenshot.jpg")
+                    media = api.media_upload(filename="screenshot.jpg")
+                    response = api.update_status(
+                        status=f"@{author} {reply} \n",
+                        in_reply_to_status_id=str(mention_id),
+                        media_ids=[media.media_id_string],
+                    )
+                    replied_ids = open("assets/replied_ids.txt", "a")
+                    replied_ids.write(f"{mention_id}\n")
+                    replied_ids.write(f"{response.id}\n")
+                    replied_ids.close()
+                    print(mention_id)
                 else:
-                	media_dict={}
-                	for i in range(len(image)):
-                		image[i].save(f"screenshot{i}.jpg")
-                		media_dict[i]=api.media_upload(f"screenshot{i}.jpg")
-                	media_ids=[media_dict[i].media_id_string for i in range(len(image))]
-                	response=api.update_status(status=f"@{author} {reply} \n",in_reply_to_status_id=str(mention_id),media_ids=media_ids,)
-                	replied_ids = open("assets/replied_ids.txt", "a")
-                	replied_ids.write(f"{mention_id}\n")
-                	replied_ids.write(f"{response.id}\n")
-                	replied_ids.close()
-                		
+                    media_dict = {}
+                    for i in range(len(image)):
+                        image[i].save(f"screenshot{i}.jpg")
+                        media_dict[i] = api.media_upload(f"screenshot{i}.jpg")
+                    media_ids = [
+                        media_dict[i].media_id_string for i in range(len(image))
+                    ]
+                    response = api.update_status(
+                        status=f"@{author} {reply} \n",
+                        in_reply_to_status_id=str(mention_id),
+                        media_ids=media_ids,
+                    )
+                    replied_ids = open("assets/replied_ids.txt", "a")
+                    replied_ids.write(f"{mention_id}\n")
+                    replied_ids.write(f"{response.id}\n")
+                    replied_ids.close()
+
             else:
                 print("replied already or not a valid screenshot request")
         except:
@@ -116,5 +132,6 @@ def reply_mentions():
 def clean_replied():
     replied_ids = open("assets/replied_ids.txt", "w")
     replied_ids.close()
+
 
 reply_mentions()
