@@ -262,5 +262,5 @@ def create_tweet_screenshot_dark(id):
         )
         img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
-        img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 128))
+        img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 140))
     return img
