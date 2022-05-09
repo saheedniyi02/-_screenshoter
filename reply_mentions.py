@@ -59,7 +59,7 @@ def reply_mentions():
             replied_to_id, full_text = get_tweet_id_text(mention)
             if (
                 (f"{mention_id}\n" not in replied_ids_list)
-                and ("screenshot" in full_text)
+                and (bot_name in full_text)
                 and (author != bot_name)
             ):
                 if "light" in full_text:
