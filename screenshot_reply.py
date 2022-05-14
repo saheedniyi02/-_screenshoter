@@ -302,7 +302,7 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     username_height = 185 + increase_height
     profile_pics_height = 120 + increase_height
     verified_height = 128 + increase_height
-    text_height = 305+ increase_height
+    text_height = 290+ increase_height
     attached_image_loc = int(
         space_text + border_top_bottom + space_profile + 15 + increase_height
     )
