@@ -15,6 +15,7 @@ ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 
+
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
     consumer_secret=API_SECRET_KEY,
@@ -47,7 +48,7 @@ def get_mention_id(mention):
 def reply_mentions():
     bot_name = "_screenshoter"
     count = 5
-    reply = "Your screenshot can be found below😁!\n\nRemember your commands,\n 'all' command gets all the tweets above the tweet you commented on in the thread.\n\nAdd 'light' to your request for light mode⬜"
+    reply = "Your screenshot can be found below😁!\n\nRemember your commands,\n 'all' command gets all the tweets above the tweet you commented on in the thread.\n\n 'light' command returns your screenshot in light mode⬜"
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
@@ -76,9 +77,8 @@ def reply_mentions():
                             image = create_tweet_screenshot_light(replied_to_id)
                     else:
                         image ,tweet_info= screenshot_quote_light(replied_to_id)
-                        print(image,tweet_info)
-                        if image == None:
-                            image = create_tweet_screenshot_light(replied_to_id,tweet_info)
+                        if image == False:
+                            image= create_tweet_screenshot_light(replied_to_id,tweet_info)
                 else:
                     if (
                         ("conversation" in full_text)
@@ -91,9 +91,8 @@ def reply_mentions():
                             image = create_tweet_screenshot_dark(replied_to_id)
                     else:
                         image,tweet_info = screenshot_quote_dark(replied_to_id)
-                        print(image,tweet_info)
                         if image == None:
-                            image = create_tweet_screenshot_dark(replied_to_id,tweet_info)
+                            image= create_tweet_screenshot_dark(replied_to_id,tweet_info)
                 if not isinstance(image, list):
                     image.save("screenshot.jpg")
                     media = api.media_upload(filename="screenshot.jpg")

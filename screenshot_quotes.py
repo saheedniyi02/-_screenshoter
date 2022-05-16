@@ -135,9 +135,9 @@ def screenshot_quote_light(id):
         tweet_info["width"],
         tweet_info["height"]
     )
-    print(quoted_id)
     if quoted_id == None:
-        return None,tweet_info
+        image=False
+        return (image,tweet_info)
     quoted_info = get_tweet_info(quoted_id)
     (
         profile_name_quoted,
@@ -333,7 +333,7 @@ def screenshot_quote_light(id):
                 quoted_start_height + border_top_bottom_quoted + 20,
             ),
         )
-    return img
+    return img,None
 
 
 def screenshot_quote_dark(id):
@@ -363,9 +363,9 @@ def screenshot_quote_dark(id):
         tweet_info["width"],
         tweet_info["height"]
     )
-    print(quoted_id)
     if quoted_id == None:
-        return None,tweet_info
+        image=False
+        return (image,tweet_info)
     quoted_info = get_tweet_info(quoted_id)
     (
         profile_name_quoted,
@@ -563,5 +563,5 @@ def screenshot_quote_dark(id):
                 quoted_start_height + border_top_bottom_quoted + 20,
             ),
         )
-    return img
+    return img,None
     
