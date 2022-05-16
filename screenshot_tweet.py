@@ -64,14 +64,10 @@ def find_n(text, text_range):
     return new_text, total_lines
 
 
-def create_tweet_screenshot_light(id):
-    tweet_info = get_tweet_info(id)
-    (
-        profile_name,
-        username,
-        user_verified,
-        text,
-        profile_pics,
+def create_tweet_screenshot_light(id,tweet_info=None):
+    if tweet_info==None:
+    	tweet_info = get_tweet_info(id)
+    (profile_name,username,user_verified,text,profile_pics,
         date,
         text_range,
         attached_image,
@@ -165,7 +161,10 @@ def create_tweet_screenshot_light(id):
     return img
 
 
-def create_tweet_screenshot_dark(id):
+def create_tweet_screenshot_dark(id,tweet_info):
+    	
+    if tweet_info==None:
+    	tweet_info = get_tweet_info(id)
     tweet_info = get_tweet_info(id)
     (
         profile_name,

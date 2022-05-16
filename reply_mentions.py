@@ -22,6 +22,8 @@ auth = OAuth1UserHandler(
     access_token_secret=ACCESS_TOKEN_SECRET,
 )
 
+
+
 api = API(auth)
 
 
@@ -44,8 +46,8 @@ def get_mention_id(mention):
 
 def reply_mentions():
     bot_name = "_screenshoter"
-    count = 5
-    reply = "Your screenshot can be found below😁!\n\nRemember your commands,\n 'all' command gets all the tweets above the tweet you commented on in the thread.\n'quote' gets a tweet and the tweet it is quoting 😁.\n\nAdd 'light' to your request for light mode⬜"
+    count = 1
+    reply = "Your screenshot can be found below😁!\n\nRemember your commands,\n 'all' command gets all the tweets above the tweet you commented on in the thread.\n\nAdd 'light' to your request for light mode⬜"
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
@@ -67,31 +69,31 @@ def reply_mentions():
                         ("conversation" in full_text)
                         or ("all" in full_text)
                         or ("thread" in full_text)
+                        or ("everything" in full_text)
                     ):
                         image = create_replies_screenshot_light(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_light(replied_to_id)
-                    elif ("quotes" in full_text) or ("quote" in full_text):
-                        image = screenshot_quote_light(replied_to_id)
-                        if image == None:
-                            image = create_tweet_screenshot_light(replied_to_id)
                     else:
-                        image = create_tweet_screenshot_light(replied_to_id)
+                        image ,tweet_info= screenshot_quote_light(replied_to_id)
+                        print(image,tweet_info)
+                        if image == None:
+                            image = create_tweet_screenshot_light(replied_to_id,tweet_info)
                 else:
                     if (
                         ("conversation" in full_text)
                         or ("all" in full_text)
                         or ("thread" in full_text)
+                        or ("everything" in full_text)
                     ):
                         image = create_replies_screenshot_dark(replied_to_id)
                         if image == None:
                             image = create_tweet_screenshot_dark(replied_to_id)
-                    elif ("quotes" in full_text) or ("quote" in full_text):
-                        image = screenshot_quote_dark(replied_to_id)
-                        if image == None:
-                            image = create_tweet_screenshot_dark(replied_to_id)
                     else:
-                        image = create_tweet_screenshot_dark(replied_to_id)
+                        image,tweet_info = screenshot_quote_dark(replied_to_id)
+                        print(image,tweet_info)
+                        if image == None:
+                            image = create_tweet_screenshot_dark(replied_to_id,tweet_info)
                 if not isinstance(image, list):
                     image.save("screenshot.jpg")
                     media = api.media_upload(filename="screenshot.jpg")
@@ -134,4 +136,4 @@ def clean_replied():
     replied_ids.close()
 
 
-reply_mentions()
+
