@@ -102,7 +102,7 @@ def create_total_height(reply_history):
     		len_history=0
     image_heights=[]
     for set in reply_set:
-    	border_top_bottom = 120
+    	border_top_bottom = 60
     	space_profile = 186
     	total_height = int(2 * border_top_bottom)
     	for tweet in set:
@@ -161,10 +161,7 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
         tweet_info["width"],
         tweet_info["height"]
     )
-    if identify == 0:
-        border_top_bottom = 120
-    else:
-        border_top_bottom = 50
+    border_top_bottom = 50
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
@@ -264,10 +261,7 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
         tweet_info["width"],
         tweet_info["height"]
     )
-    if identify == 0:
-        border_top_bottom = 120
-    else:
-        border_top_bottom = 50
+    border_top_bottom = 50
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
     profile_name_score = get_profile_name_score(profile_name)
@@ -406,5 +400,4 @@ def create_replies_screenshot_dark(id):
     	imgs.append(img)
     print(imgs)
     return imgs
-    
     
