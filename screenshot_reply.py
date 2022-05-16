@@ -102,7 +102,7 @@ def create_total_height(reply_history):
     		len_history=0
     image_heights=[]
     for set in reply_set:
-    	border_top_bottom = 60
+    	border_top_bottom = 55
     	space_profile = 186
     	total_height = int(2 * border_top_bottom)
     	for tweet in set:
