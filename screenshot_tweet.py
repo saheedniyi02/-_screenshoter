@@ -161,7 +161,7 @@ def create_tweet_screenshot_light(id,tweet_info=None):
     return img
 
 
-def create_tweet_screenshot_dark(id,tweet_info):
+def create_tweet_screenshot_dark(id,tweet_info=None):
     	
     if tweet_info==None:
     	tweet_info = get_tweet_info(id)
