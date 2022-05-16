@@ -77,7 +77,7 @@ def reply_mentions():
                             image = create_tweet_screenshot_light(replied_to_id)
                     else:
                         image ,tweet_info= screenshot_quote_light(replied_to_id)
-                        if image == False:
+                        if image == None:
                             image= create_tweet_screenshot_light(replied_to_id,tweet_info)
                 else:
                     if (
