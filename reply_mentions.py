@@ -65,7 +65,7 @@ def reply_mentions():
                 and (bot_name in full_text)
                 and (author != bot_name)
             ):
-                if "light" in full_text:
+                if ("light" in full_text) or ("white" in full_text):
                     if (
                         ("conversation" in full_text)
                         or ("all" in full_text)
