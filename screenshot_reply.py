@@ -62,7 +62,33 @@ def find_n(text, text_range):
         i = i + 1
     return new_text, total_lines
 
+def write_word_to_img(font,width,height,color,drawer,word):
+	if word.startswith("@") or word.startswith("#"):
+		color=(66,173,245)
+	drawer.text((width,height),word,font=font,fill=color,embedded_color=True,emoji_scale_factor=1,)
+	width,height=drawer.getsize(word,font)
+	return width,height
+ 
+def write_line_to_img(font,height,color,drawer,line):
+	words=line.split(" ")
+	space_words=12
+	width=70
+	for word in words:
+		write_word_to_img(font,width,height,color,drawer,word)
+		word_width,height_=drawer.getsize(word,font)
+		width=space_words+width+word_width			
+	return height_
 
+def write_sentence_to_img(font,color,drawer,text,height):
+	text=text.split("\n")
+	space_lines=10
+	original_height=height
+	height=original_height
+	for line in text:
+		line_height=write_line_to_img(font,height,color,drawer,line)
+		height=space_lines+height+50
+	return height-original_height-50
+		
 def get_reply_history(id):
     reply_history = []
     max_conversation = 20
@@ -206,19 +232,14 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
     font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # Add Text to image
-    drawer_emoji.text(
-        (70, text_height),
-        text,
-        font=font,
-        fill=(0, 0, 0),
-        embedded_color=True,
-        emoji_scale_factor=1.1,
-    )
+    color=(0, 0, 0)
+    space_text=write_sentence_to_img(font,color,drawer_emoji,text,text_height)
+    
     drawer_emoji.text(
         (240, profile_name_height), profile_name, font=bold_font, fill=(0, 0, 0)
     )
     drawer.text(
-        (240, username_height), username, font=font_username, fill=(134, 135, 134)
+        (240, username_height), username, font=font_username, fill=(134, 135, 134),
     )
     # drawer.text((70, date_height), date, font=font_username, fill=(134, 135, 134))
     img.paste(profile_pics, (70, profile_pics_height), mask)
@@ -233,7 +254,8 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
         )
         img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
-        img.paste(verified, (int(240 + 28.15 * (profile_name_score)), verified_height))
+        profile_name_width,_=drawer_emoji.getsize(profile_name,bold_font)
+        img.paste(verified, (int(240 + 15+profile_name_width), verified_height))
     return img, tweet_height
 
 
@@ -306,14 +328,9 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # Add Text to image
-    drawer_emoji.text(
-        (70, text_height),
-        text,
-        font=font,
-        fill=(255, 255, 255),
-        embedded_color=True,
-        emoji_scale_factor=1.1,
-    )
+    color=(255, 255, 255)
+    space_text=write_sentence_to_img(font,color,drawer_emoji,text,text_height)
+    
     drawer_emoji.text(
         (240, profile_name_height), profile_name, font=bold_font, fill=(255, 255, 255)
     )
@@ -333,8 +350,9 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
         )
         img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
+        profile_name_width,_=drawer_emoji.getsize(profile_name,bold_font)
         img.paste(
-            verified_dark, (int(240 + 28.15 * (profile_name_score)), verified_height)
+            verified_dark, (int(240 + 15+profile_name_width), verified_height)
         )
     return img, tweet_height
 
@@ -400,4 +418,5 @@ def create_replies_screenshot_dark(id):
     	imgs.append(img)
     print(imgs)
     return imgs
+  
     

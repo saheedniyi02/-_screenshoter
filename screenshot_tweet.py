@@ -24,7 +24,7 @@ my_username = "@_screenshoter"
 
 
 def clean_text(text):
-    words_per_line = 47
+    words_per_line = 44
     no_lines = (len(text) // words_per_line) + 1
     lines = []
     for line_no in range(no_lines + 1):
@@ -63,6 +63,33 @@ def find_n(text, text_range):
     total_lines = total_lines - (len(new_text) - len(new_text_stripped)) +1
     return new_text, total_lines
 
+def write_word_to_img(font,width,height,color,drawer,word):
+	if word.startswith("@") or word.startswith("#"):
+		color=(66,173,245)
+	drawer.text((width,height),word,font=font,fill=color,embedded_color=True,emoji_scale_factor=1,)
+	width,height=drawer.getsize(word,font)
+	return width,height
+ 
+def write_line_to_img(font,height,color,drawer,line):
+	words=line.split(" ")
+	space_words=12
+	width=70
+	for word in words:
+		write_word_to_img(font,width,height,color,drawer,word)
+		word_width,height_=drawer.getsize(word,font)
+		width=space_words+width+word_width			
+	return height_
+
+def write_sentence_to_img(font,color,drawer,text):
+	text=text.split("\n")
+	space_lines=10
+	original_height=305
+	height=original_height
+	for line in text:
+		line_height=write_line_to_img(font,height,color,drawer,line)
+		height=space_lines+height+55
+	return height-original_height-55
+		
 
 def create_tweet_screenshot_light(id,tweet_info=None):
     if tweet_info==None:
@@ -93,7 +120,6 @@ def create_tweet_screenshot_light(id,tweet_info=None):
     
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
-    profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
     if no_lines == 1:
@@ -128,20 +154,17 @@ def create_tweet_screenshot_light(id,tweet_info=None):
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
     # Add Text to image
+
+    color=(0, 0, 0)
+    space_text=write_sentence_to_img(font,color,drawer_emoji,text)
+    
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
         my_username,
         font=font_my_username,
         fill=(46, 45, 45),
     )
-    drawer_emoji.text(
-        (70, 305),
-        text,
-        font=font,
-        fill=(0, 0, 0),
-        embedded_color=True,
-        emoji_scale_factor=1.1,
-    )
+#Marry a man that's older than you, so when you start loosing your beauty, he loses his eyesight 🤡.
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(0, 0, 0))
     drawer.text((240, 185), username, font=font_username, fill=(134, 135, 134))
     drawer.text((70, date_height), date, font=font_username, fill=(134, 135, 134))
@@ -157,7 +180,8 @@ def create_tweet_screenshot_light(id,tweet_info=None):
         )
         img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
-        img.paste(verified, (int(240 + 28.15 * (profile_name_score)), 140))
+        profile_name_width,_=drawer_emoji.getsize(profile_name,bold_font)
+        img.paste(verified, (int(240+15+profile_name_width), 135))
     return img
 
 
@@ -196,7 +220,6 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
     	attached_image_width=default_width
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
-    profile_name_score = get_profile_name_score(profile_name)
     width = 1300
     border_top_bottom = 120
     if no_lines == 1:
@@ -237,15 +260,9 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
         fill=(209, 205, 205),
     )
     # Add Text to image
-    drawer_emoji.text(
-        (70, 305),
-        text,
-        font=font,
-        fill=(255, 255, 255),
-        embedded_color=True,
-        align="left",
-        emoji_scale_factor=1.1,
-    )
+    color=(255, 255, 255)
+    space_text=write_sentence_to_img(font,color,drawer_emoji,text)
+    
     drawer_emoji.text((240, 130), profile_name, font=bold_font, fill=(255, 255, 255))
     drawer.text((240, 185), username, font=font_username, fill=(196, 195, 194))
     drawer.text((70, date_height), date, font=font_username, fill=(196, 195, 194))
@@ -261,8 +278,7 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
         )
         img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
     if user_verified == True:
-        img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 140))
+        profile_name_width,_=drawer_emoji.getsize(profile_name,bold_font)
+        img.paste(verified_dark, ((int(240 +15+ profile_name_width)), 135))
+        
     return img
-#https://twitter.com/iaboyeji/status/?t=u6-E64FhzmTYmMxp56ajrA&s=19
-img=create_tweet_screenshot_light(1530800085134712832)
-img.save("image.jpg")
