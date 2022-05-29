@@ -123,10 +123,10 @@ def create_tweet_screenshot_light(id,tweet_info=None):
         fill=(235, 240, 235),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    font = ImageFont.truetype("assets/arial 1.ttf", 55)
+    font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
-    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
     # Add Text to image
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
@@ -226,9 +226,9 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
         fill=(41, 39, 39),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
-    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    font = ImageFont.truetype("assets/arial 1.ttf", 55)
+    font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
+    font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     drawer.text(
         (int(width * 0.76) + 15, total_height - 47),
@@ -263,3 +263,6 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
     if user_verified == True:
         img.paste(verified_dark, (int(240 + 28.15 * (profile_name_score)), 140))
     return img
+#https://twitter.com/iaboyeji/status/?t=u6-E64FhzmTYmMxp56ajrA&s=19
+img=create_tweet_screenshot_light(1530800085134712832)
+img.save("image.jpg")

@@ -202,8 +202,8 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
     )
     drawer = ImageDraw.Draw(img)
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 50)
-    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    font = ImageFont.truetype("assets/arial 1.ttf", 50)
+    font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # Add Text to image
     drawer_emoji.text(
@@ -302,8 +302,8 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     )
     drawer = ImageDraw.Draw(img)
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 50)
-    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
+    font = ImageFont.truetype("assets/arial 1.ttf", 50)
+    font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # Add Text to image
     drawer_emoji.text(
@@ -352,7 +352,7 @@ def create_replies_screenshot_light(id):
     	img = Image.new(mode="RGB", size=(width, total_height), color=(256, 256, 256))
     	drawer = ImageDraw.Draw(img)
     	drawer.rectangle([(int(width * 0.76), int(total_height - 55)), (width, total_height)],fill=(235, 240, 235),)
-    	font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    	font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
     	drawer.text((int(width * 0.76) + 15, total_height - 47),my_username,font=font_my_username,fill=(46, 45, 45),)
     	increase_height = 0
     	counter=counter+1
@@ -384,7 +384,7 @@ def create_replies_screenshot_dark(id):
     	img = Image.new(mode="RGB", size=(width, total_height), color=(0, 0, 0))
     	drawer = ImageDraw.Draw(img)
     	drawer.rectangle([(int(width * 0.76), int(total_height - 55)), (width, total_height)],fill=(41, 39, 39),)
-    	font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    	font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
     	drawer.text((int(width * 0.76) + 15, total_height - 47),my_username,font=font_my_username,fill=(209, 205, 205),)
     	increase_height = 0
     	counter=counter+1

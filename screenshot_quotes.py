@@ -245,10 +245,10 @@ def screenshot_quote_light(id):
         fill=(41, 39, 39),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
-    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
-    font_quote_date = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    font = ImageFont.truetype("assets/arial 1.ttf", 55)
+    font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
+    font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
+    font_quote_date = ImageFont.truetype("assets/arial 1.ttf", 35)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
     # tweet
     drawer.text(
@@ -473,10 +473,10 @@ def screenshot_quote_dark(id):
         fill=(235, 240, 235),
     )
     drawer_emoji = Pilmoji(img)
-    font = ImageFont.truetype("assets/OpenSans-Regular.ttf", 55)
-    font_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 45)
-    font_my_username = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
-    font_quote_date = ImageFont.truetype("assets/OpenSans-Regular.ttf", 35)
+    font = ImageFont.truetype("assets/arial 1.ttf", 55)
+    font_username = ImageFont.truetype("assets/arial 1.ttf", 45)
+    font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
+    font_quote_date = ImageFont.truetype("assets/arial 1.ttf", 35)
     bold_font = ImageFont.truetype("assets/Roboto-Bold.ttf", 50)
 
     # tweet
