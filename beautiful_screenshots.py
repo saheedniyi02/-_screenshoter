@@ -265,7 +265,3 @@ def create_beautiful_screenshot(id, tweet_info=None):
     # paste
     background_image.paste(twitter_logo, (width, 200))
     return background_image
-
-
-img = create_beautiful_screenshot(1531275354752573440)
-img.save("background3.jpg")
