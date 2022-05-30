@@ -159,7 +159,7 @@ def reply_mentions():
 
             else:
                 print("replied already or not a valid screenshot request")
-        except IndexError:
+        except:
             pass
 
 
