@@ -12,13 +12,8 @@ from utils import (
     get_profile_pics_mask,
 )
 
-verified = Image.open("assets/verified.png")
-verified = verified.convert("RGB")
-verified = verified.resize((45, 45))
 
-verified_dark = Image.open("assets/verified_dark.png")
-verified_dark = verified_dark.convert("RGB")
-verified_dark = verified_dark.resize((45, 45))
+
 
 my_username = "@_screenshoter"
 
@@ -100,6 +95,19 @@ def write_sentence_to_img(font, color, drawer, text):
         height = space_lines + height + 55
     return height - original_height - 55
 
+def create_verified(color=(255, 255, 255)):
+    im = Image.open("assets/verified.png")
+    rgba = im.convert("RGB")
+    newData = []
+    datas = rgba.getdata()
+    for item in datas:
+        if item[0] >= 230 and item[1] >= 230 and item[2] >= 230:
+            newData.append(color)
+        else:
+            newData.append(item)
+
+    rgba.putdata(newData)
+    rgba.save("assets/verified_new.png", "PNG")
 
 def create_tweet_screenshot_color(
     id, tweet_info=None, background_color=(255, 255, 255)
@@ -197,7 +205,13 @@ def create_tweet_screenshot_color(
             radius=40,
         )
         img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
+    
     if user_verified == True:
+        create_verified(color=background_color)
+        verified = Image.open("assets/verified_new.png")
+        verified = verified.convert("RGB")
+        verified = verified.resize((45, 45))
+
         profile_name_width, _ = drawer_emoji.getsize(profile_name, bold_font)
         img.paste(verified, (int(240 + 15 + profile_name_width), 135))
     return img, total_height, width
