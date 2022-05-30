@@ -1,12 +1,10 @@
 import os
-from numpy import full
 from tweepy import API, Client, OAuth1UserHandler
 from screenshot_tweet import create_tweet_screenshot_light, create_tweet_screenshot_dark
 from screenshot_reply import (
     create_replies_screenshot_light,
     create_replies_screenshot_dark,
 )
-from beautiful_screenshots import create_beautiful_screenshot
 from screenshot_quotes import screenshot_quote_light, screenshot_quote_dark
 
 
@@ -17,12 +15,14 @@ ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 
+
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
     consumer_secret=API_SECRET_KEY,
     access_token=ACCESS_TOKEN,
     access_token_secret=ACCESS_TOKEN_SECRET,
 )
+
 
 
 api = API(auth)
@@ -48,9 +48,7 @@ def get_mention_id(mention):
 def reply_mentions():
     bot_name = "_screenshoter"
     count = 5
-    reply = "Your screenshot can be found below😁!\n\nRemember your commands:\n 'All' command gets all the tweets above the tweet you \
-        commented on in the thread.\n\n 'light' command returns your screenshot in light mode only⬜\n\n'dark' command returns your screenshot \
-            in dark mode."
+    reply = "Your screenshot can be found below😁!\n\nRemember your commands,\n 'all' command gets all the tweets above the tweet you commented on in the thread.\n\n 'light' command returns your screenshot in light mode⬜"
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
@@ -78,11 +76,9 @@ def reply_mentions():
                         if image == None:
                             image = create_tweet_screenshot_light(replied_to_id)
                     else:
-                        image, tweet_info = screenshot_quote_light(replied_to_id)
+                        image ,tweet_info= screenshot_quote_light(replied_to_id)
                         if image == None:
-                            image = create_tweet_screenshot_light(
-                                replied_to_id, tweet_info
-                            )
+                            image= create_tweet_screenshot_light(replied_to_id,tweet_info)
                 else:
                     if (
                         ("conversation" in full_text)
@@ -94,16 +90,9 @@ def reply_mentions():
                         if image == None:
                             image = create_tweet_screenshot_dark(replied_to_id)
                     else:
-                        image, tweet_info = screenshot_quote_dark(replied_to_id)
+                        image,tweet_info = screenshot_quote_dark(replied_to_id)
                         if image == None:
-                            if ("dark" in full_text) or ("black" in full_text):
-                                image = create_tweet_screenshot_dark(
-                                    replied_to_id, tweet_info
-                                )
-                            else:
-                                image = create_beautiful_screenshot(
-                                    replied_to_id, tweet_info
-                                )
+                            image= create_tweet_screenshot_dark(replied_to_id,tweet_info)
                 if not isinstance(image, list):
                     image.save("screenshot.jpg")
                     media = api.media_upload(filename="screenshot.jpg")
@@ -144,3 +133,6 @@ def reply_mentions():
 def clean_replied():
     replied_ids = open("assets/replied_ids.txt", "w")
     replied_ids.close()
+
+
+
