@@ -16,11 +16,6 @@ BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
-API_KEY = "v3Erx5FaRXzzsdTyKlVF06Vsv"
-API_SECRET_KEY = "NVtgLE0NdHEhcMbq0CkGYt143Gm6hKR1KS09F11UDgKoSkh7Ku"
-BEARER_TOKEN = " AAAAAAAAAAAAAAAAAAAAAKrMbwEAAAAAzYiaf0sFOscq80AVJicrqnTRF1s%3D19zEJ6OYzU3V6gIsrWC9rmXDg48Mi7YnHaFZDxwvZXE3yA15w2"
-ACCESS_TOKEN = "1518863995662389248-1ll5M7E6o39ebR9eNl3JItPCV64cbN"
-ACCESS_TOKEN_SECRET = "9mwuqFA6hmaF3xdkpGcCeMuBBRzVbArewNLFIZPukJNmK"
 
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
@@ -71,7 +66,6 @@ def reply_mentions():
                 and (bot_name in full_text)
                 and (author != bot_name)
             ):
-                print(1)
                 if ("light" in full_text) or ("white" in full_text):
                     if (
                         ("conversation" in full_text)
@@ -79,68 +73,57 @@ def reply_mentions():
                         or ("thread" in full_text)
                         or ("everything" in full_text)
                     ):
-                        print(2)
-                        image = create_replies_screenshot_light(replied_to_id)
+                        image,tweet_info= create_replies_screenshot_light(replied_to_id)
                         if image == None:
-                            print(3)
-                            image = create_tweet_screenshot_light(replied_to_id)
+                            image = create_tweet_screenshot_light(replied_to_id,tweet_info)
                     else:
-                        print(4)
                         image, tweet_info = screenshot_quote_light(replied_to_id)
                         if image == None:
-                            print(5)
                             image = create_tweet_screenshot_light(
                                 replied_to_id, tweet_info
                             )
                 else:
-                    print(6)
                     if (
                         ("conversation" in full_text)
                         or ("all" in full_text)
                         or ("thread" in full_text)
                         or ("everything" in full_text)
                     ):
-                        print(7)
-                        image = create_replies_screenshot_dark(replied_to_id)
+                        image,tweet_info = create_replies_screenshot_dark(replied_to_id)
                         if image == None:
-                            print(8)
-                            image = create_tweet_screenshot_dark(replied_to_id)
+                        	if ("dark" in full_text) or ("black" in full_text):
+                        		image = create_tweet_screenshot_dark(replied_to_id,tweet_info)
+                        	else:
+                        		                                image=create_beautiful_screenshot(replied_to_id, tweet_info)
+                        		
                     else:
-                        print(9)
+
                         image, tweet_info = screenshot_quote_dark(replied_to_id)
                         if image == None:
-                            print(10)
                             if ("dark" in full_text) or ("black" in full_text):
                                 image = create_tweet_screenshot_dark(
                                     replied_to_id, tweet_info
                                 )
-                                print(11)
                             else:
-                                print(12)
                                 image = create_beautiful_screenshot(
                                     replied_to_id, tweet_info
                                 )
-                print(13)
                 if not isinstance(image, list):
                     image.save("screenshot.jpg")
-                    print(14)
                     media = api.media_upload(filename="screenshot.jpg")
                     response = api.update_status(
                         status=f"@{author} {reply} \n",
                         in_reply_to_status_id=str(mention_id),
                         media_ids=[media.media_id_string],
                     )
-                    print(50)
                     replied_ids = open("assets/replied_ids.txt", "a")
                     replied_ids.write(f"{mention_id}\n")
                     replied_ids.write(f"{response.id}\n")
                     replied_ids.close()
                     print(mention_id)
                 else:
-                    print(15)
                     media_dict = {}
                     for i in range(len(image)):
-                        print(16)
                         image[i].save(f"screenshot{i}.jpg")
                         media_dict[i] = api.media_upload(f"screenshot{i}.jpg")
                     media_ids = [
@@ -151,7 +134,6 @@ def reply_mentions():
                         in_reply_to_status_id=str(mention_id),
                         media_ids=media_ids,
                     )
-                    print(50)
                     replied_ids = open("assets/replied_ids.txt", "a")
                     replied_ids.write(f"{mention_id}\n")
                     replied_ids.write(f"{response.id}\n")
@@ -159,7 +141,8 @@ def reply_mentions():
 
             else:
                 print("replied already or not a valid screenshot request")
-        except:
+        except Exception as e:
+            print(e)
             pass
 
 
