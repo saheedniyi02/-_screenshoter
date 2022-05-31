@@ -120,42 +120,46 @@ def create_total_height(reply_history):
     len_history=len(reply_history)
     while len_history!=0:
     	if len(reply_history)>max_conversations:
-            reply_set.append(reply_history[:max_conversations])
-            reply_history=reply_history[max_conversations:]
-        else:
-            reply_set.append(reply_history)
-            reply_history=[]
-            len_history=0
+    		reply_set.append(reply_history[:max_conversations])
+    		reply_history=reply_history[max_conversations:]
+    	else:
+    		reply_set.append(reply_history)
+    		reply_history=[]
+    		len_history=0
     image_heights=[]
     for set in reply_set:
-        border_top_bottom = 55
-        space_profile = 186
-        total_height = int(2 * border_top_bottom)
-        for tweet in set:
-            text, text_range,attached_image_width,attached_image_height = tweet["text"], tweet["text_range"],tweet["width"],tweet["height"]
-            text, no_lines = find_n(text, text_range)
-            if no_lines == 1:
-                space_text = 100
-            elif no_lines == 2:
-                space_text = 45 * no_lines * 2
-            elif no_lines==3:
-                space_text = 45 * no_lines * 1.6
-            elif no_lines==4:
-                space_text=45*no_lines*1.5
-            elif no_lines>4:
-                space_text=45*no_lines*1.45
-            elif no_lines>9:
-                space_text=45*no_lines*1.4
-            total_height = int(total_height + space_profile + space_text+50)
-
-            if tweet["attached_image"]:
-                default_width=1150
-                error=50
-                attached_image_height=int(default_width*(attached_image_height/attached_image_width))
-                total_height = total_height + attached_image_height + error
-            else:
-                pass
-        image_heights.append(total_height)
+    	border_top_bottom = 55
+    	space_profile = 186
+    	total_height = int(2 * border_top_bottom)
+    	for tweet in set:
+        	text, text_range,attached_image_width,attached_image_height = tweet["text"], tweet["text_range"],tweet["width"],tweet["height"]
+        	text, no_lines = find_n(text, text_range)
+        	if no_lines == 1:
+        		space_text = 100
+        	elif no_lines == 2:
+        		space_text = 45 * no_lines * 2
+        	elif no_lines==3:
+        		space_text = 45 * no_lines * 1.6
+        	elif no_lines==4:
+        		space_text=45*no_lines*1.5
+        	elif no_lines>4:
+        		space_text=45*no_lines*1.45
+        	elif no_lines>9:
+        		space_text=45*no_lines*1.4
+        	total_height = int(total_height + space_profile + space_text+50)
+        	
+        	if tweet["attached_image"]:
+        		default_width=1150
+        		error=50
+        		attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+        		total_height = total_height + attached_image_height + error
+        	else:
+        		pass
+    	
+    	
+    	
+    	
+    	image_heights.append(total_height)
     return image_heights,reply_set
 
 
@@ -192,20 +196,20 @@ def create_screenshot_light(tweet_info, identify, increase_height, img):
     elif no_lines == 2:
         space_text = 45 * no_lines * 2
     elif no_lines==3:
-        space_text = 45 * no_lines * 1.6
+    	space_text = 45 * no_lines * 1.6
     elif no_lines==4:
-        space_text=45*no_lines*1.5
+    	space_text=45*no_lines*1.5
     elif no_lines>4:
-        space_text=45*no_lines*1.45
+    	space_text=45*no_lines*1.45
     elif no_lines>9:
-        space_text=45*no_lines*1.4
+    	space_text=45*no_lines*1.4
     space_profile = 185
     default_width=1150
     if attached_image:
-        attached_image_height=int(default_width*(attached_image_height/attached_image_width))
-        attached_image=attached_image.resize((default_width,attached_image_height))
-        attached_image_width=default_width
-        error = 50
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    	error = 50
     else:
         attached_image_height = 0
         error = 0
@@ -288,20 +292,20 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
     elif no_lines == 2:
         space_text = 45 * no_lines * 2
     elif no_lines==3:
-        space_text = 45 * no_lines * 1.6
+    	space_text = 45 * no_lines * 1.6
     elif no_lines==4:
-        space_text=45*no_lines*1.5
+    	space_text=45*no_lines*1.5
     elif no_lines>4:
-        space_text=45*no_lines*1.45
+    	space_text=45*no_lines*1.45
     elif no_lines>9:
-        space_text=45*no_lines*1.4
+    	space_text=45*no_lines*1.4
     space_profile = 185
     default_width=1150
     if attached_image:
-        attached_image_height=int(default_width*(attached_image_height/attached_image_width))
-        attached_image=attached_image.resize((default_width,attached_image_height))
-        attached_image_width=default_width
-        error = 50
+    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+    	attached_image=attached_image.resize((default_width,attached_image_height))
+    	attached_image_width=default_width
+    	error = 50
     else:
         attached_image_height = 0
         error = 0
@@ -362,25 +366,25 @@ def create_replies_screenshot_light(id):
     counter=0
     imgs=[]
     for set in reply_set:
-        total_height=total_heights[counter]
-        img = Image.new(mode="RGB", size=(width, total_height), color=(256, 256, 256))
-        drawer = ImageDraw.Draw(img)
-        drawer.rectangle([(int(width * 0.76), int(total_height - 55)), (width, total_height)],fill=(235, 240, 235),)
-        font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
-        drawer.text((int(width * 0.76) + 15, total_height - 47),my_username,font=font_my_username,fill=(46, 45, 45),)
-        increase_height = 0
-        counter=counter+1
-        identify = 0
-        for reply in set:
+    	total_height=total_heights[counter]
+    	img = Image.new(mode="RGB", size=(width, total_height), color=(256, 256, 256))
+    	drawer = ImageDraw.Draw(img)
+    	drawer.rectangle([(int(width * 0.76), int(total_height - 55)), (width, total_height)],fill=(235, 240, 235),)
+    	font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
+    	drawer.text((int(width * 0.76) + 15, total_height - 47),my_username,font=font_my_username,fill=(46, 45, 45),)
+    	increase_height = 0
+    	counter=counter+1
+    	identify = 0
+    	for reply in set:
             img, tweet_height = create_screenshot_light(
             reply, identify, increase_height, img)
             increase_height = increase_height + tweet_height
             identify = identify + 1
-            
-        if total_height>=8192:
-            print(total_height)
-            img=img.resize((width,8191))
-        imgs.append(img)
+    	if total_height>=8192:
+    	   	print(total_height)
+    	   	img=img.resize((width,8191))
+        	
+    	imgs.append(img)
     print(imgs)
     return imgs,None
 
@@ -394,24 +398,24 @@ def create_replies_screenshot_dark(id):
     counter=0
     imgs=[]
     for set in reply_set:
-        total_height=total_heights[counter]
-        img = Image.new(mode="RGB", size=(width, total_height), color=(0, 0, 0))
-        drawer = ImageDraw.Draw(img)
-        drawer.rectangle([(int(width * 0.76), int(total_height - 55)), (width, total_height)],fill=(41, 39, 39),)
-        font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
-        drawer.text((int(width * 0.76) + 15, total_height - 47),my_username,font=font_my_username,fill=(209, 205, 205),)
-        increase_height = 0
-        counter=counter+1
-        identify = 0
-        for reply in set:
+    	total_height=total_heights[counter]
+    	img = Image.new(mode="RGB", size=(width, total_height), color=(0, 0, 0))
+    	drawer = ImageDraw.Draw(img)
+    	drawer.rectangle([(int(width * 0.76), int(total_height - 55)), (width, total_height)],fill=(41, 39, 39),)
+    	font_my_username = ImageFont.truetype("assets/arial 1.ttf", 35)
+    	drawer.text((int(width * 0.76) + 15, total_height - 47),my_username,font=font_my_username,fill=(209, 205, 205),)
+    	increase_height = 0
+    	counter=counter+1
+    	identify = 0
+    	for reply in set:
             img, tweet_height = create_screenshot_dark(reply, identify, increase_height, img)
             increase_height = increase_height + tweet_height
             identify = identify + 1
-            
-        if total_height>=8192:
-            print(total_height)
-            img=img.resize((width,8191))
-            imgs.append(img)
+    	   	
+    	if total_height>=8192:
+    		print(total_height)
+    		img=img.resize((width,8191))
+    	imgs.append(img)
     print(imgs)
     return imgs,None
   
