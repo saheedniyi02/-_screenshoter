@@ -25,7 +25,7 @@ auth = OAuth1UserHandler(
 )
 
 
-api = API(auth)
+api = API(auth,wait_on_rate_limit=True)
 
 
 def get_tweet_id_text(mention):
