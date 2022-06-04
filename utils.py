@@ -23,7 +23,7 @@ auth = OAuth1UserHandler(
     access_token_secret=ACCESS_TOKEN_SECRET,
 )
 
-api = API(auth)
+api = API(auth,wait_on_rate_limit=True)
 
 
 def get_tweet_info(id):
