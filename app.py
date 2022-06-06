@@ -12,7 +12,7 @@ def home():
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=reply_mentions, trigger="interval", seconds=30)
-scheduler.add_job(func=clean_replied,trigger="interval",seconds=86400)
+scheduler.add_job(func=clean_replied,trigger="interval",seconds=600)
 scheduler.start()
 
 
