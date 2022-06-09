@@ -124,7 +124,7 @@ def reply_mentions():
                 else:
                     replied_ids = open("assets/replied_ids.txt", "a")
                     replied_ids.write(f"{mention_id}\n")
-                    replied_ids.write(f"{response.id}\n")
+                    
                     replied_ids.close()
                     media_dict = {}
                     for i in range(len(image)):
@@ -140,7 +140,6 @@ def reply_mentions():
                     )
                     replied_ids = open("assets/replied_ids.txt", "a")
                     replied_ids.write(f"{mention_id}\n")
-                    replied_ids.write(f"{response.id}\n")
                     replied_ids.close()
 
             else:
