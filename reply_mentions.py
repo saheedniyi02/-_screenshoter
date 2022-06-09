@@ -110,7 +110,6 @@ def reply_mentions():
                 if not isinstance(image, list):
                     replied_ids = open("assets/replied_ids.txt", "a")
                     replied_ids.write(f"{mention_id}\n")
-                    replied_ids.write(f"{response.id}\n")
                     replied_ids.close()
                     image.save("screenshot.jpg")
                     media = api.media_upload(filename="screenshot.jpg")
@@ -123,8 +122,7 @@ def reply_mentions():
                     print(mention_id)
                 else:
                     replied_ids = open("assets/replied_ids.txt", "a")
-                    replied_ids.write(f"{mention_id}\n")
-                    
+                    replied_ids.write(f"{mention_id}\n")                
                     replied_ids.close()
                     media_dict = {}
                     for i in range(len(image)):
@@ -138,10 +136,7 @@ def reply_mentions():
                         in_reply_to_status_id=str(mention_id),
                         media_ids=media_ids,
                     )
-                    replied_ids = open("assets/replied_ids.txt", "a")
-                    replied_ids.write(f"{mention_id}\n")
-                    replied_ids.close()
-
+                    
             else:
                 print("replied already or not a valid screenshot request")
         except Exception as e:
