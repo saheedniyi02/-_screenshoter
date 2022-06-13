@@ -46,7 +46,7 @@ def get_mention_id(mention):
 
 
 def reply_mentions():
-    bot_name = "_screenshoter"#bot_name must not be in reply
+    bot_name = "_screenshoter"
     count = 2
     reply = "Your screenshot can be found below😁!\n\nRemember your commands:\n 'All' command gets all the tweets above the tweet you commented on in the thread.\n\n 'light' and 'dark' commands returns your screenshot in light mode⬜ and dark mode⬛"
     mentions = api.mentions_timeline(
@@ -72,13 +72,13 @@ def reply_mentions():
                         or ("thread" in full_text)
                         or ("everything" in full_text)
                     ):
-                        image,tweet_info= create_replies_screenshot_light(replied_to_id)
+                        image,tweet_info,sensitive= create_replies_screenshot_light(replied_to_id)
                         if image == None:
-                            image = create_tweet_screenshot_light(replied_to_id,tweet_info)
+                            image,sensitive= create_tweet_screenshot_light(replied_to_id,tweet_info)
                     else:
-                        image, tweet_info = screenshot_quote_light(replied_to_id)
+                        image, tweet_info,sensitive = screenshot_quote_light(replied_to_id)
                         if image == None:
-                            image = create_tweet_screenshot_light(
+                            image,sensitive = create_tweet_screenshot_light(
                                 replied_to_id, tweet_info
                             )
                 else:
@@ -88,23 +88,23 @@ def reply_mentions():
                         or ("thread" in full_text)
                         or ("everything" in full_text)
                     ):
-                        image,tweet_info = create_replies_screenshot_dark(replied_to_id)
+                        image,tweet_info ,sensitive= create_replies_screenshot_dark(replied_to_id)
                         if image == None:
                         	if ("dark" in full_text) or ("black" in full_text):
-                        		image = create_tweet_screenshot_dark(replied_to_id,tweet_info)
+                        		image,sensitive = create_tweet_screenshot_dark(replied_to_id,tweet_info)
                         	else:
-                        		                                image=create_beautiful_screenshot(replied_to_id, tweet_info)
+                        		                                image,sensitive=create_beautiful_screenshot(replied_to_id, tweet_info)
                         		
                     else:
 
-                        image, tweet_info = screenshot_quote_dark(replied_to_id)
+                        image, tweet_info,sensitive = screenshot_quote_dark(replied_to_id)
                         if image == None:
                             if ("dark" in full_text) or ("black" in full_text):
-                                image = create_tweet_screenshot_dark(
+                                image ,sensitive= create_tweet_screenshot_dark(
                                     replied_to_id, tweet_info
                                 )
                             else:
-                                image = create_beautiful_screenshot(
+                                image,sensitive = create_beautiful_screenshot(
                                     replied_to_id, tweet_info
                                 )
                 if not isinstance(image, list):
@@ -117,12 +117,13 @@ def reply_mentions():
                         status=f"@{author} {reply} \n",
                         in_reply_to_status_id=str(mention_id),
                         media_ids=[media.media_id_string],
+                        possibly_sensitive=sensitive
                     )
 
                     print(mention_id)
                 else:
                     replied_ids = open("assets/replied_ids.txt", "a")
-                    replied_ids.write(f"{mention_id}\n")                
+                    replied_ids.write(f"{mention_id}\n")
                     replied_ids.close()
                     media_dict = {}
                     for i in range(len(image)):
@@ -135,8 +136,10 @@ def reply_mentions():
                         status=f"@{author} {reply} \n",
                         in_reply_to_status_id=str(mention_id),
                         media_ids=media_ids,
+                        possibly_sensitive=sensitive
                     )
-                    
+
+
             else:
                 print("replied already or not a valid screenshot request")
         except Exception as e:
@@ -147,3 +150,5 @@ def reply_mentions():
 def clean_replied():
     replied_ids = open("assets/replied_ids.txt", "w")
     replied_ids.close()
+    
+reply_mentions()

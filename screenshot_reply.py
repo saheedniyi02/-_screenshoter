@@ -115,6 +115,7 @@ def get_reply_history(id):
 
 
 def create_total_height(reply_history):
+    sensitive=False
     max_conversations=5
     reply_set=[]
     len_history=len(reply_history)
@@ -148,19 +149,18 @@ def create_total_height(reply_history):
         		space_text=45*no_lines*1.4
         	total_height = int(total_height + space_profile + space_text+50)
         	
+        	if tweet["sensitive"]==True:
+        		sensitive=True
+        	
         	if tweet["attached_image"]:
         		default_width=1150
         		error=50
         		attached_image_height=int(default_width*(attached_image_height/attached_image_width))
         		total_height = total_height + attached_image_height + error
         	else:
-        		pass
-    	
-    	
-    	
-    	
+        		pass	
     	image_heights.append(total_height)
-    return image_heights,reply_set
+    return image_heights,reply_set,sensitive
 
 
 def create_screenshot_light(tweet_info, identify, increase_height, img):
@@ -359,9 +359,10 @@ def create_screenshot_dark(tweet_info, identify, increase_height, img):
 
 def create_replies_screenshot_light(id):
     no_replies, reply_history = get_reply_history(id)
+    sensitive=False
     if len(reply_history) == 1:
-        return None,reply_history[0]
-    total_heights,reply_set= create_total_height(reply_history)
+        return None,reply_history[0],sensitive
+    total_heights,reply_set,sensitive= create_total_height(reply_history)
     width = 1300
     counter=0
     imgs=[]
@@ -386,14 +387,15 @@ def create_replies_screenshot_light(id):
         	
     	imgs.append(img)
     print(imgs)
-    return imgs,None
+    return imgs,None,sensitive
 
 
 def create_replies_screenshot_dark(id):
     no_replies, reply_history = get_reply_history(id)
+    sensitive=False
     if len(reply_history) == 1:
-        return None,reply_history[0]
-    total_heights,reply_set = create_total_height(reply_history)
+        return None,reply_history[0],sensitive
+    total_heights,reply_set,sensitive= create_total_height(reply_history)
     width = 1300
     counter=0
     imgs=[]
@@ -417,6 +419,6 @@ def create_replies_screenshot_dark(id):
     		img=img.resize((width,8191))
     	imgs.append(img)
     print(imgs)
-    return imgs,None
+    return imgs,None,sensitive
   
     

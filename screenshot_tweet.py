@@ -99,7 +99,8 @@ def create_tweet_screenshot_light(id,tweet_info=None):
         text_range,
         attached_image,
         attached_image_width,
-        attached_image_height
+        attached_image_height,
+        sensitive
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -110,7 +111,8 @@ def create_tweet_screenshot_light(id,tweet_info=None):
         tweet_info["text_range"],
         tweet_info["attached_image"],
         tweet_info["width"],
-        tweet_info["height"]
+        tweet_info["height"],
+        tweet_info["sensitive"]
     )
     default_width=1150
     if attached_image:
@@ -182,7 +184,7 @@ def create_tweet_screenshot_light(id,tweet_info=None):
     if user_verified == True:
         profile_name_width,_=drawer_emoji.getsize(profile_name,bold_font)
         img.paste(verified, (int(240+15+profile_name_width), 135))
-    return img
+    return img,sensitive
 
 
 def create_tweet_screenshot_dark(id,tweet_info=None):
@@ -200,7 +202,8 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
         text_range,
         attached_image,
         attached_image_width,
-        attached_image_height
+        attached_image_height,
+        sensitive
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -211,7 +214,8 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
         tweet_info["text_range"],
         tweet_info["attached_image"],
         tweet_info["width"],
-        tweet_info["height"]
+        tweet_info["height"],
+        tweet_info["sensitive"]
     )
     default_width=1150
     if attached_image:
@@ -281,4 +285,4 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
         profile_name_width,_=drawer_emoji.getsize(profile_name,bold_font)
         img.paste(verified_dark, ((int(240 +15+ profile_name_width)), 135))
         
-    return img
+    return img,sensitive

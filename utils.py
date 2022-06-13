@@ -15,7 +15,6 @@ BEARER_TOKEN = os.environ.get("BEARER_TOKEN")
 ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
-
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
     consumer_secret=API_SECRET_KEY,
@@ -48,10 +47,12 @@ def get_tweet_info(id):
         image_url = replied_to.entities["media"][0]["media_url_https"]
         attached_image = Image.open(urlopen(image_url))
         width,height=attached_image.size
+        sensitive=replied_to.possibly_sensitive
     except:
         attached_image = None
         width=0
         height=0
+        sensitive=False
 
     return {
         "name": user_info.name,
@@ -66,7 +67,8 @@ def get_tweet_info(id):
         "quoted_id": quoted_id,
         "attached_image": attached_image,
         "width":width,
-        "height":height
+        "height":height,
+        "sensitive":sensitive
     }
 
 

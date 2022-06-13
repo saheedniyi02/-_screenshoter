@@ -121,7 +121,8 @@ def screenshot_quote_light(id):
         quoted_id,
         attached_image,
         attached_image_width,
-        attached_image_height
+        attached_image_height,
+        sensitive
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -133,11 +134,13 @@ def screenshot_quote_light(id):
         tweet_info["quoted_id"],
         tweet_info["attached_image"],
         tweet_info["width"],
-        tweet_info["height"]
+        tweet_info["height"],
+        tweet_info["sensitive"]
     )
     if quoted_id == None:
+        sensitive=False
         image=None
-        return image,tweet_info
+        return image,tweet_info,sensitive
     quoted_info = get_tweet_info(quoted_id)
     (
         profile_name_quoted,
@@ -150,7 +153,8 @@ def screenshot_quote_light(id):
         _,
         quoted_image,
         quoted_image_width,
-        quoted_image_height
+        quoted_image_height,
+        quoted_sensitive
     ) = (
         quoted_info["name"],
         quoted_info["username"],
@@ -162,8 +166,13 @@ def screenshot_quote_light(id):
         quoted_info["quoted_id"],
         quoted_info["attached_image"],
         quoted_info["width"],
-        quoted_info["height"]
+        quoted_info["height"],
+        quoted_info["sensitive"]
     )
+    if True in [quoted_sensitive,sensitive]:
+    	sensitive=True
+    else:
+    	sensitive=False
     text, no_lines = find_n(text, text_range)
     default_width=1150
     if attached_image:
@@ -333,7 +342,7 @@ def screenshot_quote_light(id):
                 quoted_start_height + border_top_bottom_quoted + 20,
             ),
         )
-    return img,None
+    return img,None,sensitive
 
 
 def screenshot_quote_dark(id):
@@ -349,7 +358,8 @@ def screenshot_quote_dark(id):
         quoted_id,
         attached_image,
         attached_image_width,
-        attached_image_height
+        attached_image_height,
+        sensitive
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -361,11 +371,13 @@ def screenshot_quote_dark(id):
         tweet_info["quoted_id"],
         tweet_info["attached_image"],
         tweet_info["width"],
-        tweet_info["height"]
+        tweet_info["height"],
+        tweet_info["sensitive"]
     )
     if quoted_id == None:
+        sensitive=False
         image=None
-        return image,tweet_info
+        return image,tweet_info,sensitive
     quoted_info = get_tweet_info(quoted_id)
     (
         profile_name_quoted,
@@ -378,7 +390,8 @@ def screenshot_quote_dark(id):
         _,
         quoted_image,
         quoted_image_width,
-        quoted_image_height
+        quoted_image_height,
+        quoted_sensitive
     ) = (
         quoted_info["name"],
         quoted_info["username"],
@@ -390,8 +403,13 @@ def screenshot_quote_dark(id):
         quoted_info["quoted_id"],
         quoted_info["attached_image"],
         quoted_info["width"],
-        quoted_info["height"]
+        quoted_info["height"],
+        quoted_info["sensitive"]
     )
+    if True in [quoted_sensitive,sensitive]:
+    	sensitive=True
+    else:
+    	sensitive=False
     text, no_lines = find_n(text, text_range)
     default_width=1150
     if attached_image:
@@ -563,5 +581,5 @@ def screenshot_quote_dark(id):
                 quoted_start_height + border_top_bottom_quoted + 20,
             ),
         )
-    return img,None
+    return img,None,sensitive
     

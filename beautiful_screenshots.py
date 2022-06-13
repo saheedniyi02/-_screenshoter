@@ -125,6 +125,7 @@ def create_tweet_screenshot_color(
         attached_image,
         attached_image_width,
         attached_image_height,
+        sensitive
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -136,6 +137,7 @@ def create_tweet_screenshot_color(
         tweet_info["attached_image"],
         tweet_info["width"],
         tweet_info["height"],
+        tweet_info["sensitive"]
     )
     default_width = 1150
     if attached_image:
@@ -214,7 +216,7 @@ def create_tweet_screenshot_color(
 
         profile_name_width, _ = drawer_emoji.getsize(profile_name, bold_font)
         img.paste(verified, (int(240 + 15 + profile_name_width), 135))
-    return img, total_height, width
+    return img, total_height, width,sensitive
 
 
 def create_twitter_logo(color=(255, 255, 255)):
@@ -253,7 +255,7 @@ def create_beautiful_screenshot(id, tweet_info=None):
     tweet_color = color_selection["tweet_color"]
     if tweet_color == None:
         tweet_color = (255, 255, 255)
-    img, total_height, width = create_tweet_screenshot_color(
+    img, total_height, width,sensitive= create_tweet_screenshot_color(
         id, tweet_info, background_color=tweet_color
     )
     background_image = Image.new(
@@ -278,4 +280,4 @@ def create_beautiful_screenshot(id, tweet_info=None):
     twitter_logo = twitter_logo.resize((120, 100))
     # paste
     background_image.paste(twitter_logo, (width, 200))
-    return background_image
+    return background_image,sensitive
