@@ -151,4 +151,4 @@ def clean_replied():
     replied_ids = open("assets/replied_ids.txt", "w")
     replied_ids.close()
     
-reply_mentions()
+
