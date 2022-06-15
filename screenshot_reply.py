@@ -113,7 +113,17 @@ def get_reply_history(id):
 
     return len(reply_history), new_history
 
-
+def create_twitter_logo(color=(0, 0, 0)):
+    im = Image.open("assets/twitter_logo.png")
+    rgba = im.convert("RGB")
+    newData = []
+    datas = rgba.getdata()
+    for item in datas:
+        if item[0] >= 230 and item[1] >= 230 and item[2] >= 230:
+            newData.append(color)
+        else:
+            newData.append(item)
+            
 def create_total_height(reply_history):
     sensitive=False
     max_conversations=5
@@ -376,17 +386,18 @@ def create_replies_screenshot_light(id):
     	increase_height = 0
     	counter=counter+1
     	identify = 0
+ 
     	for reply in set:
             img, tweet_height = create_screenshot_light(
             reply, identify, increase_height, img)
             increase_height = increase_height + tweet_height
             identify = identify + 1
     	if total_height>=8192:
-    	   	print(total_height)
-    	   	img=img.resize((width,8191))
-        	
+    	    img=img.resize((width,8191))
+    	twitter_logo = Image.open("assets/twitter_logo.png")
+    	twitter_logo = twitter_logo.resize((120, 100))
+    	img.paste(twitter_logo, (width-200, 100))        
     	imgs.append(img)
-    print(imgs)
     return imgs,None,sensitive
 
 
@@ -412,13 +423,14 @@ def create_replies_screenshot_dark(id):
     	for reply in set:
             img, tweet_height = create_screenshot_dark(reply, identify, increase_height, img)
             increase_height = increase_height + tweet_height
-            identify = identify + 1
-    	   	
+            identify = identify + 1	   	
     	if total_height>=8192:
-    		print(total_height)
     		img=img.resize((width,8191))
+    	create_twitter_logo()
+    	twitter_logo = Image.open("assets/twitter_logo_new.png")
+    	twitter_logo = twitter_logo.resize((120, 100))
+    	# paste
+    	img.paste(twitter_logo, (width-200, 100))
     	imgs.append(img)
-    print(imgs)
     return imgs,None,sensitive
-  
     
