@@ -89,21 +89,7 @@ def write_sentence_to_img(font,color,drawer,text):
 		line_height=write_line_to_img(font,height,color,drawer,line)
 		height=space_lines+height+55
 	return height-original_height-55
-		
 
-def create_twitter_logo(color=(0, 0, 0)):
-    im = Image.open("assets/twitter_logo.png")
-    rgba = im.convert("RGB")
-    newData = []
-    datas = rgba.getdata()
-    for item in datas:
-        if item[0] >= 230 and item[1] >= 230 and item[2] >= 230:
-            newData.append(color)
-        else:
-            newData.append(item)
-
-    rgba.putdata(newData)
-    rgba.save("assets/twitter_logo_new.png", "PNG")
 def create_tweet_screenshot_light(id,tweet_info=None):
     if tweet_info==None:
     	tweet_info = get_tweet_info(id)
@@ -302,11 +288,9 @@ def create_tweet_screenshot_dark(id,tweet_info=None):
     if user_verified == True:
         profile_name_width,_=drawer_emoji.getsize(profile_name,bold_font)
         img.paste(verified_dark, ((int(240 +15+ profile_name_width)), 135))
-    create_twitter_logo()
-    twitter_logo = Image.open("assets/twitter_logo_new.png")
+    twitter_logo = Image.open("assets/twitter_logo_dark.png")
     twitter_logo = twitter_logo.resize((120, 100))
     # paste
     img.paste(twitter_logo, (width-200, 100))        
     return img,sensitive
-img,sensive=create_tweet_screenshot_dark(1536806440534478848)
-img.save("img.jpg")
+

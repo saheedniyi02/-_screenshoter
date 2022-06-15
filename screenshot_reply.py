@@ -113,17 +113,7 @@ def get_reply_history(id):
 
     return len(reply_history), new_history
 
-def create_twitter_logo(color=(0, 0, 0)):
-    im = Image.open("assets/twitter_logo.png")
-    rgba = im.convert("RGB")
-    newData = []
-    datas = rgba.getdata()
-    for item in datas:
-        if item[0] >= 230 and item[1] >= 230 and item[2] >= 230:
-            newData.append(color)
-        else:
-            newData.append(item)
-            
+
 def create_total_height(reply_history):
     sensitive=False
     max_conversations=5
@@ -426,11 +416,18 @@ def create_replies_screenshot_dark(id):
             identify = identify + 1	   	
     	if total_height>=8192:
     		img=img.resize((width,8191))
-    	create_twitter_logo()
-    	twitter_logo = Image.open("assets/twitter_logo_new.png")
+    	twitter_logo = Image.open("assets/twitter_logo_dark.png")
     	twitter_logo = twitter_logo.resize((120, 100))
     	# paste
     	img.paste(twitter_logo, (width-200, 100))
     	imgs.append(img)
     return imgs,None,sensitive
     
+
+#https://twitter.com/BenHundeyin/status/?t=A-lC4ynuyS1cWO9YYA6tJQ&s=19
+
+imgs,_,sensitive=create_replies_screenshot_dark(1537132628079480833)
+i=0
+for img in imgs:
+	i=i+1
+	img.save(f"imugk{i}.jpg")
