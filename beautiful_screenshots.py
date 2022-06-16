@@ -249,7 +249,7 @@ def create_beautiful_screenshot(id, tweet_info=None):
         color_selection = random.choice(colors_dict)
     except:
         color_selection = colors_dict[2]
-    color_selection = random.choice(colors_dict)
+    #color_selection = random.choice(colors_dict)
 
     background_color = color_selection["background_color"]
     tweet_color = color_selection["tweet_color"]
