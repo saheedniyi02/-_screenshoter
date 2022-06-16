@@ -7,6 +7,7 @@ from screenshot_reply import (
     create_replies_screenshot_dark,
 )
 from beautiful_screenshots import create_beautiful_screenshot
+from beautiful_thread import create_beautiful_thread
 from screenshot_quotes import screenshot_quote_light, screenshot_quote_dark
 
 
@@ -81,7 +82,7 @@ def reply_mentions():
                             image,sensitive = create_tweet_screenshot_light(
                                 replied_to_id, tweet_info
                             )
-                else:
+                elif ("dark" in full_text) or ("black" in full_text):
                     if (
                         ("conversation" in full_text)
                         or ("all" in full_text)
@@ -90,23 +91,20 @@ def reply_mentions():
                     ):
                         image,tweet_info ,sensitive= create_replies_screenshot_dark(replied_to_id)
                         if image == None:
-                        	if ("dark" in full_text) or ("black" in full_text):
-                        		image,sensitive = create_tweet_screenshot_dark(replied_to_id,tweet_info)
-                        	else:
-                        		                                image,sensitive=create_beautiful_screenshot(replied_to_id, tweet_info)
-                        		
+                        	image,sensitive = create_tweet_screenshot_dark(replied_to_id,tweet_info)               		
                     else:
-
                         image, tweet_info,sensitive = screenshot_quote_dark(replied_to_id)
                         if image == None:
-                            if ("dark" in full_text) or ("black" in full_text):
-                                image ,sensitive= create_tweet_screenshot_dark(
-                                    replied_to_id, tweet_info
-                                )
-                            else:
-                                image,sensitive = create_beautiful_screenshot(
-                                    replied_to_id, tweet_info
-                                )
+                            image ,sensitive= create_tweet_screenshot_dark(replied_to_id, tweet_info)
+                else:
+                   if (("conversation" in full_text) or ("all" in full_text) or ("thread" in full_text) or ("everything" in full_text)):
+                        image,tweet_info ,sensitive= create_beautiful_thread(replied_to_id)
+                        if image == None:
+                        	image,sensitive = create_beautiful_screenshot(replied_to_id,tweet_info) 
+                   else:
+                    	image ,sensitive= create_beautiful_screenshot(replied_to_id)
+               
+                              
                 if not isinstance(image, list):
                     replied_ids = open("assets/replied_ids.txt", "a")
                     replied_ids.write(f"{mention_id}\n")
@@ -138,6 +136,7 @@ def reply_mentions():
                         media_ids=media_ids,
                         possibly_sensitive=sensitive
                     )
+                    print(mention_id)
 
 
             else:
