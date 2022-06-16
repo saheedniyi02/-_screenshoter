@@ -102,7 +102,10 @@ def reply_mentions():
                         if image == None:
                         	image,sensitive = create_beautiful_screenshot(replied_to_id,tweet_info) 
                    else:
-                    	image ,sensitive= create_beautiful_screenshot(replied_to_id)
+                        image, tweet_info,sensitive = screenshot_quote_dark(replied_to_id)
+                        if image == None:
+                            image ,sensitive= create_beautiful_screenshot(replied_to_id, tweet_info)
+   
                
                               
                 if not isinstance(image, list):
