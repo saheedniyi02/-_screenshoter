@@ -283,6 +283,7 @@ def create_screenshot_color(tweet_info, identify, increase_height, img,backgroun
         verified = Image.open("assets/verified_new.png")
         verified = verified.convert("RGB")
         verified = verified.resize((45, 45))
+        img.paste(verified, (int(240 + 15+profile_name_width), verified_height))
 
     return img, tweet_height
     
