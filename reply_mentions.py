@@ -18,6 +18,8 @@ ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 ACCESS_TOKEN_SECRET = os.environ.get("ACCESS_TOKEN_SECRET")
 
 
+
+
 auth = OAuth1UserHandler(
     consumer_key=API_KEY,
     consumer_secret=API_SECRET_KEY,
@@ -153,4 +155,22 @@ def clean_replied():
     replied_ids = open("assets/replied_ids.txt", "w")
     replied_ids.close()
     
-
+def reply_form(id,type,color):
+	if type=="tweet":
+		if color=="light":
+			img,_=create_tweet_screenshot_light(id)
+		elif color=="dark":
+			img,_=create_tweet_screenshot_dark(id)
+		elif color=="colorful":
+			img,_=create_beautiful_screenshot(id)
+		images=[img]
+	elif type=="thread":
+		if color=="light":
+			images,_,_=create_replies_screenshot_light(id)
+		elif color=="dark":
+			images,_,_=create_replies_screenshot_dark(id)	
+		elif color=="colorful":
+			images,_,_=create_beautiful_thread(id)
+		if images==None:
+			return reply_form(id,"tweet",color)
+	return images

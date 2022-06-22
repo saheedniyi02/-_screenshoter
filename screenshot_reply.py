@@ -423,11 +423,3 @@ def create_replies_screenshot_dark(id):
     	imgs.append(img)
     return imgs,None,sensitive
     
-
-#https://twitter.com/BenHundeyin/status/?t=A-lC4ynuyS1cWO9YYA6tJQ&s=19
-
-imgs,_,sensitive=create_replies_screenshot_dark(1537132628079480833)
-i=0
-for img in imgs:
-	i=i+1
-	img.save(f"imugk{i}.jpg")

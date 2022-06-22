@@ -1,13 +1,62 @@
-from flask import Flask
+import pickle
 from apscheduler.schedulers.background import BackgroundScheduler
-from reply_mentions import reply_mentions, clean_replied
+from collections import Counter
+import datetime
+from reply_mentions import reply_mentions,reply_form, clean_replied
+from flask import Flask,render_template,request,redirect,url_for,send_file,jsonify
 
 app = Flask(__name__)
 
 
-@app.route("/")
+def check_stats(add=False):
+    with open('assets/stats.pickle', 'rb') as file:
+    		stats=pickle.load(file)
+    		if add==True:
+    			stats["count"]+=1
+    		return stats
+    		
+def save_stats(stats):
+    with open('assets/stats.pickle', 'wb') as outputfile:
+    	pickle.dump(stats, outputfile)
+
+stats=Counter()
+stats["count"]=0
+start_time=datetime.datetime.now()
+save_stats(stats)
+		
+def get_id_from_link(link):
+    tweet_id = link.split("/status/")[1].split("?")[0]
+    return tweet_id
+    
+
+
+    
+@app.route("/",methods=["GET","POST"])
 def home():
-    return "home"
+    if request.method=="POST":
+    	link=request.form.get("link")
+    	type=request.form.get("type")
+    	color=request.form.get("color")
+    	id=get_id_from_link(link)
+    	images=reply_form(id,type,color)
+    	stats=check_stats(add=True)
+    	save_stats(stats)
+    	print(images)
+    	for i,img in enumerate(images):
+    		img.save(f"static/tweet_screenshot{i}.jpg")
+    		return send_file(f"static/tweet_screenshot{i}.jpg",as_attachment=True)
+    	
+    return render_template("index.html")
+    
+@app.route("/stats",methods=["GET"])
+def get_stats():
+    current_time=datetime.datetime.now()
+    no_downloads=check_stats()["count"]
+    date_difference=(current_time-start_time).seconds/3600
+    return jsonify({"no of requested screenshots":no_downloads,"time difference":date_difference})
+    
+
+   
 
 
 scheduler = BackgroundScheduler()
@@ -17,4 +66,4 @@ scheduler.start()
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
