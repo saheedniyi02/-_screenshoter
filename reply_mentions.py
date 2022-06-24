@@ -53,7 +53,7 @@ def reply_mentions():
     bot_name = "_screenshoter"
     count = 2
     reply_1 = "Your screenshot can be found below😁!\n\nRemember your commands:\n 'All' command gets all the tweets above the tweet you commented on in the thread.\n\n 'light' and 'dark' commands returns your screenshot in light mode⬜ and dark mode⬛"
-    reply _2="Your screenshot can be found below 😁!\n\n🤩Want to get your screenshot without using the bot? use: screenshoter.live ."
+    reply_2="Your screenshot can be found below 😁!\n\n🤩Want to get your screenshot without using the bot? use: screenshoter.live ."
     reply=random.choice([reply_1,reply_2])
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
