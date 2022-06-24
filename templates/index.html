@@ -35,7 +35,7 @@
 
   <header>
     <h1>
-      Paste the link to the tweet below
+      Paste the link to the tweet in the link below
     </h1>
     <form method="post">
       <label for="link">Link</label>
@@ -67,7 +67,21 @@
     </abbr> 
     </form>
 
-
+{% if files %}
+<script>
+    var urls = []
+    {% for file in files %}
+    urls.push("{{ url_for('files_download', filename=file) }}")
+    {% endfor %}
+    urls.forEach(url => {
+        var iframe = document.createElement('iframe'); iframe.style.visibility = 'collapse';
+        iframe.style.visibility = 'collapse';
+        iframe.src = url;
+        document.body.append(iframe);
+        setTimeout(() => iframe.remove(), 2000);
+    });
+</script>
+{% endif %}
 
     <section class="how-to-use">
       <h1>How to Use.</h1>
