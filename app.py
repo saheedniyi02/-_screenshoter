@@ -68,10 +68,10 @@ def files_download(filename):
     return send_file("static/"+filename,as_attachment=True)
 
 
-#scheduler = BackgroundScheduler()
-#scheduler.add_job(func=reply_mentions, trigger="interval", seconds=27)
-#scheduler.add_job(func=clean_replied,trigger="interval",seconds=86400)
-#scheduler.start()
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=reply_mentions, trigger="interval", seconds=27)
+scheduler.add_job(func=clean_replied,trigger="interval",seconds=86400)
+scheduler.start()
 
 
 if __name__ == "__main__":
