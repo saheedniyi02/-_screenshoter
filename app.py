@@ -28,7 +28,18 @@ def get_id_from_link(link):
     tweet_id = link.split("/status/")[1].split("?")[0]
     return tweet_id
     
+def save_images(imgs):
+    file_paths=[]
+    for i,img in enumerate(imgs):
+    	img.save(f"static/tweet_screenshot{i}.jpg")
+    	file_paths.append(f"tweet_screenshot{i}.jpg")
+    return file_paths
 
+
+
+#   		for i,img in enumerate(images):
+#    			img.save(f"static/tweet_screenshot{i}.jpg")
+#    			return send_file(f"static/tweet_screenshot{i}.jpg",as_attachment=True)
 
     
 @app.route("/",methods=["GET","POST"])
@@ -39,31 +50,29 @@ def home():
     	color=request.form.get("color")
     	id=get_id_from_link(link)
     	images=reply_form(id,type,color)
+    	images_paths=save_images(images)
     	stats=check_stats(add=True)
     	save_stats(stats)
-    	print(images)
-    	for i,img in enumerate(images):
-    		img.save(f"static/tweet_screenshot{i}.jpg")
-    		return send_file(f"static/tweet_screenshot{i}.jpg",as_attachment=True)
-    	
+    	return render_template('index.html', files=images_paths)    	
     return render_template("index.html")
     
-@app.route("/stats",methods=["GET"])
+@app.route("/stats")
 def get_stats():
     current_time=datetime.datetime.now()
     no_downloads=check_stats()["count"]
     date_difference=(current_time-start_time).seconds/3600
     return jsonify({"no of requested screenshots":no_downloads,"time difference":date_difference})
     
+@app.route('/files_download/<filename>')
+def files_download(filename):
+    return send_file("static/"+filename,as_attachment=True)
 
-   
 
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=reply_mentions, trigger="interval", seconds=27)
-scheduler.add_job(func=clean_replied,trigger="interval",seconds=86400)
-scheduler.start()
+#scheduler = BackgroundScheduler()
+#scheduler.add_job(func=reply_mentions, trigger="interval", seconds=27)
+#scheduler.add_job(func=clean_replied,trigger="interval",seconds=86400)
+#scheduler.start()
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
