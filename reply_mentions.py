@@ -55,7 +55,8 @@ def reply_mentions():
     #reply_1 = "Your screenshot can be found below😁!\n\nRemember your commands:\n 'All' command gets all the tweets above the tweet you commented on in the thread.\n\n 'light' and 'dark' commands returns your screenshot in light mode⬜ and dark mode⬛"
     #reply_2="Your screenshot can be found below 😁!\n\n🤩Want to get your screenshot without using the bot? Visit : screenshoter.live ."
     #reply=random.choice([reply_1,reply_2])
-    reply = "Your screenshot can be found below🤩😁!\n\nAd:\nListen to UdoAmaka by Solwaseun here:\nApple music:https://music.apple.com/ng/album/udoamaka-original-version/1633950795?i=1633951037\nSpotify: https://open.spotify.com/track/0iKJl7PNwF72EwGvL3Tuqd?si=kf-bks1rQE6AY0g_Qfkx6A&utm_source=copy-link\nBoomplay: https://www.boomplaymusic.com/share/music/95531888?srModel=COPYLINK&srList=ANDROID"
+    link=random.choice(["\nApple music:https://music.apple.com/ng/album/udoamaka-original-version/1633950795?i=1633951037","\nSpotify: https://open.spotify.com/track/0iKJl7PNwF72EwGvL3Tuqd?si=kf-bks1rQE6AY0g_Qfkx6A&utm_source=copy-link",'\nBoomplay: https://www.boomplaymusic.com/share/music/95531888?srModel=COPYLINK&srList=ANDROID"'])
+    reply = "Your screenshot can be found below🤩😁!\n\nAd:\nListen to UdoAmaka by Solwaseun here:"+link 
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
