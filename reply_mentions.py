@@ -56,7 +56,7 @@ def reply_mentions():
     #reply_2="Your screenshot can be found below 😁!\n\n🤩Want to get your screenshot without using the bot? Visit : screenshoter.live ."
     #reply=random.choice([reply_1,reply_2])
     link="https://t.me/cryptoviptrad"
-    reply = "Your screenshot can be found below🤩😁!\n\nAd:\nDo you trade Crypto Futures? Copy our Signals. Join this telegram group :"+link 
+    reply = "Your screenshot can be found below🤩😁!\n\nAd:\nDo you trade Crypto Futures? Copy our Signals. Join this telegram group : "+link 
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
