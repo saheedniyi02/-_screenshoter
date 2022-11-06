@@ -57,7 +57,7 @@ def reply_mentions():
     reply=random.choice([reply_1,reply_2])
     #link="https://t.me/cryptoviptrad"
     #reply = "Your screenshot can be found below🤩😁!\n\nAd:\nExclusive Crypto Futures Trading Community. Join the telegram group Now: "+link 
-    reply="Your screenshot can be found below😁!\nAd: HOW OTHER NIGERIANS ARE EARNING IN DOLLARS, BY JUST UPLOADING BOOKS ON AMAZON\n~Even ithout a writing skill or you've not written  a book before\nJOIN CLASS FOR FREE CLICK HERE👇\nhttps://t.co/V2HCK9S5kj\nlink expires soon"
+    #reply="Your screenshot can be found below😁!\nAd: HOW OTHER NIGERIANS ARE EARNING IN DOLLARS, BY JUST UPLOADING BOOKS ON AMAZON\n~Even ithout a writing skill or you've not written  a book before\nJOIN CLASS FOR FREE CLICK HERE👇\nhttps://t.co/V2HCK9S5kj\nlink expires soon"
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
     )
