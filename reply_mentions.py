@@ -55,8 +55,9 @@ def reply_mentions():
     reply_1 = "Your screenshot can be found below😁!\n\nRemember your commands:\n 'All' command gets all the tweets above the tweet you commented on in the thread.\n\n 'light' and 'dark' commands returns your screenshot in light mode⬜ and dark mode⬛"
     reply_2="Your screenshot can be found below 😁!\n\n🤩Want to get your screenshot without using the bot? Visit : screenshoter.live ."
     reply=random.choice([reply_1,reply_2])
-    #link="https://t.me/cryptoviptrad"
-    #reply = "Your screenshot can be found below🤩😁!\n\nAd:\nExclusive Crypto Futures Trading Community. Join the telegram group Now: "+link 
+    reply_1 = "Your screenshot can be found below😁!\n\nAd: Everyone will run after this if they knew how good this was.\nThis?🤔\nYea, what I'm about to tell you😎👇\nGet Free daily trade Calls on Cryptos and NFts with Giveaways here http://t.me/tradewithwealth"
+    reply_2="Your screenshot can be found below 😁!\n\n🤩Ad: Do you know you can Get Free daily trade Calls on Cryptos to make from 100%-500% gains here 👇👇\nhttp://t.me/tradewithwealth"
+    reply=random.choice([reply_1,reply_2])
     #reply="Your screenshot can be found below😁!\nAd: HOW OTHER NIGERIANS ARE EARNING IN DOLLARS, BY JUST UPLOADING BOOKS ON AMAZON\n~Even ithout a writing skill or you've not written  a book before\nJOIN CLASS FOR FREE CLICK HERE👇\nhttps://t.co/V2HCK9S5kj\nlink expires soon"
     mentions = api.mentions_timeline(
         count=count, include_entities=True, tweet_mode="extended"
