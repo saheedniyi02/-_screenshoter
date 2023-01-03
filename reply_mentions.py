@@ -56,7 +56,7 @@ def reply_mentions():
     reply_2="Your screenshot can be found below 😁!\n\n🤩Want to get your screenshot without using the bot? Visit : screenshoter.live ."
     reply=random.choice([reply_1,reply_2])
     #reply = "Your screenshot can be found below😁!\n\nAd: Everyone will run after this if they knew how good this was.\nThis?🤔\nYea, what I'm about to tell you😎👇\nGet Free daily trade Calls on Cryptos and NFts with Giveaways here http://t.me/tradewithwealth"
-    reply="Your screenshot can be found below 😁!\n\n🤩Ad: Safcoin is the only Crypto coin that has been going up ever since this year by over 1000% Check out their group on how to buy some for yourself https://t.co/jqoY3XS270 "
+    #reply="Your screenshot can be found below 😁!\n\n🤩Ad: Safcoin is the only Crypto coin that has been going up ever since this year by over 1000% Check out their group on how to buy some for yourself https://t.co/jqoY3XS270 "
     #reply=random.choice([reply_1,reply_2])
     #reply="Your screenshot can be found below😁!\nAd: HOW OTHER NIGERIANS ARE EARNING IN DOLLARS, BY JUST UPLOADING BOOKS ON AMAZON\n~Even ithout a writing skill or you've not written  a book before\nJOIN CLASS FOR FREE CLICK HERE👇\nhttps://t.co/V2HCK9S5kj\nlink expires soon"
     mentions = api.mentions_timeline(
