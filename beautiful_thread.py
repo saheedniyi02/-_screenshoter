@@ -10,6 +10,8 @@ from utils import (
     remove_start_space,
     get_profile_name_score,
     get_profile_pics_mask,
+    get_images_height,
+    attach_images
 )
 max_conversation=5
 
@@ -109,7 +111,7 @@ def create_total_height(reply_history):
     	space_profile = 186
     	total_height = int(2 * border_top_bottom)
     	for tweet in set:
-        	text, text_range,attached_image_width,attached_image_height = tweet["text"], tweet["text_range"],tweet["width"],tweet["height"]
+        	text, text_range,attached_image_widths,attached_image_heights = tweet["text"], tweet["text_range"],tweet["widths"],tweet["heights"]
         	text, no_lines = find_n(text, text_range)
         	if no_lines == 1:
         		space_text = 100
@@ -128,10 +130,9 @@ def create_total_height(reply_history):
         	if tweet["sensitive"]==True:
         		sensitive=True
         	
-        	if tweet["attached_image"]:
-        		default_width=1150
+        	if tweet["attached_images"]:
         		error=50
-        		attached_image_height=int(default_width*(attached_image_height/attached_image_width))
+        		attached_image_height=get_images_height(attached_image_widths,attached_image_heights)
         		total_height = total_height + attached_image_height + error
         	else:
         		pass	
@@ -189,17 +190,13 @@ def create_twitter_logo(color=(255, 255, 255)):
     rgba.save("assets/twitter_logo_new.png", "PNG")
             
 def create_screenshot_color(tweet_info, identify, increase_height, img,background_color=(255, 255, 255)):
-    (
-        profile_name,
-        username,
-        user_verified,
-        text,
-        profile_pics,
+    (profile_name,username,user_verified,text,profile_pics,
         date,
         text_range,
-        attached_image,
-        attached_image_width,
-        attached_image_height
+        attached_images,
+        attached_image_widths,
+        attached_image_heights,
+        sensitive
     ) = (
         tweet_info["name"],
         tweet_info["username"],
@@ -208,9 +205,10 @@ def create_screenshot_color(tweet_info, identify, increase_height, img,backgroun
         tweet_info["image"],
         tweet_info["date"],
         tweet_info["text_range"],
-        tweet_info["attached_image"],
-        tweet_info["width"],
-        tweet_info["height"]
+        tweet_info["attached_images"],
+        tweet_info["widths"],
+        tweet_info["heights"],
+        tweet_info["sensitive"]
     )
     border_top_bottom = 50
     text, no_lines = find_n(text, text_range)
@@ -230,10 +228,8 @@ def create_screenshot_color(tweet_info, identify, increase_height, img,backgroun
     	space_text=45*no_lines*1.4
     space_profile = 185
     default_width=1150
-    if attached_image:
-    	attached_image_height=int(default_width*(attached_image_height/attached_image_width))
-    	attached_image=attached_image.resize((default_width,attached_image_height))
-    	attached_image_width=default_width
+    if attached_images:
+    	attached_image_height=get_images_height(attached_image_widths,attached_image_heights)
     	error = 50
     else:
         attached_image_height = 0
@@ -268,16 +264,8 @@ def create_screenshot_color(tweet_info, identify, increase_height, img,backgroun
     )
     # drawer.text((70, date_height), date, font=font_username, fill=(134, 135, 134))
     img.paste(profile_pics, (70, profile_pics_height), mask)
-    if attached_image:
-        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
-        mask_drawer = ImageDraw.Draw(mask_image)
-        mask_drawer.rounded_rectangle(
-            [(0, 0), (attached_image_width, attached_image_height)],
-            fill=255,
-            width=2,
-            radius=40,
-        )
-        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
+    #paste attached_images
+    img=attach_images(img,attached_images,attached_image_loc, attached_image_height)
     if user_verified == True:
         create_verified(color=background_color)
         verified = Image.open("assets/verified_new.png")
@@ -318,7 +306,6 @@ def create_replies_screenshot_color(id,background_color=(255, 255, 255)):
     	   	img=img.resize((width,8191-125))
         	
     	imgs.append(img)
-    print(imgs)
     return imgs,total_height,width,None,sensitive
 
 

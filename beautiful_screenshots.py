@@ -10,6 +10,8 @@ from utils import (
     check_last_space,
     remove_start_space,
     get_profile_pics_mask,
+    get_images_height,
+    attach_images
 )
 
 
@@ -114,17 +116,12 @@ def create_tweet_screenshot_color(
 ):
     if tweet_info == None:
         tweet_info = get_tweet_info(id)
-    (
-        profile_name,
-        username,
-        user_verified,
-        text,
-        profile_pics,
+    (profile_name,username,user_verified,text,profile_pics,
         date,
         text_range,
-        attached_image,
-        attached_image_width,
-        attached_image_height,
+        attached_images,
+        attached_image_widths,
+        attached_image_heights,
         sensitive
     ) = (
         tweet_info["name"],
@@ -134,18 +131,13 @@ def create_tweet_screenshot_color(
         tweet_info["image"],
         tweet_info["date"],
         tweet_info["text_range"],
-        tweet_info["attached_image"],
-        tweet_info["width"],
-        tweet_info["height"],
+        tweet_info["attached_images"],
+        tweet_info["widths"],
+        tweet_info["heights"],
         tweet_info["sensitive"]
     )
     default_width = 1150
-    if attached_image:
-        attached_image_height = int(
-            default_width * (attached_image_height / attached_image_width)
-        )
-        attached_image = attached_image.resize((default_width, attached_image_height))
-        attached_image_width = default_width
+    attached_image_height=get_images_height(attached_image_widths,attached_image_heights)
 
     text, no_lines = find_n(text, text_range)
     profile_pics, mask = get_profile_pics_mask(profile_pics)
@@ -197,17 +189,7 @@ def create_tweet_screenshot_color(
     drawer.text((240, 185), username, font=font_username, fill=(134, 135, 134))
     drawer.text((70, date_height), date, font=font_username, fill=(134, 135, 134))
     img.paste(profile_pics, (70, 120), mask)
-    if attached_image:
-        mask_image = Image.new("L", [attached_image_width, attached_image_height], 0)
-        mask_drawer = ImageDraw.Draw(mask_image)
-        mask_drawer.rounded_rectangle(
-            [(0, 0), (attached_image_width, attached_image_height)],
-            fill=255,
-            width=2,
-            radius=40,
-        )
-        img.paste(attached_image, (70, attached_image_loc), mask=mask_image)
-    
+    img=attach_images(img,attached_images,attached_image_loc, attached_image_height)
     if user_verified == True:
         create_verified(color=background_color)
         verified = Image.open("assets/verified_new.png")

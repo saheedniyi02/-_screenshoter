@@ -10,6 +10,8 @@ from utils import (
     remove_start_space,
     get_profile_name_score,
     get_profile_pics_mask,
+    get_images_height,
+    attach_images
 )
 
 
@@ -132,15 +134,21 @@ def screenshot_quote_light(id):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["quoted_id"],
-        tweet_info["attached_image"],
-        tweet_info["width"],
-        tweet_info["height"],
+        tweet_info["attached_images"],
+        tweet_info["widths"],
+        tweet_info["heights"],
         tweet_info["sensitive"]
     )
+
+    	
     if quoted_id == None:
         sensitive=False
         image=None
         return image,tweet_info,sensitive
+    if attached_image:
+    	attached_image,attached_image_width,attached_image_height=attached_image[0],attached_image_width[0],attached_image_height[0]
+    else:
+    	attached_image,attached_image_width,attached_image_height=None,0,0
     quoted_info = get_tweet_info(quoted_id)
     (
         profile_name_quoted,
@@ -164,11 +172,15 @@ def screenshot_quote_light(id):
         quoted_info["date"],
         quoted_info["text_range"],
         quoted_info["quoted_id"],
-        quoted_info["attached_image"],
-        quoted_info["width"],
-        quoted_info["height"],
+        quoted_info["attached_images"],
+        quoted_info["widths"],
+        quoted_info["heights"],
         quoted_info["sensitive"]
     )
+    if quoted_image:
+    	quoted_image,quoted_image_width,quoted_image_height=quoted_image[0],quoted_image_width[0],quoted_image_height[0]
+    else:
+    	quoted_image,quoted_image_width,quoted_image_height=None,0,0
     if True in [quoted_sensitive,sensitive]:
     	sensitive=True
     else:
@@ -369,15 +381,21 @@ def screenshot_quote_dark(id):
         tweet_info["date"],
         tweet_info["text_range"],
         tweet_info["quoted_id"],
-        tweet_info["attached_image"],
-        tweet_info["width"],
-        tweet_info["height"],
+        tweet_info["attached_images"],
+        tweet_info["widths"],
+        tweet_info["heights"],
         tweet_info["sensitive"]
     )
+
+    	
     if quoted_id == None:
         sensitive=False
         image=None
         return image,tweet_info,sensitive
+    if attached_image:
+    	attached_image,attached_image_width,attached_image_height=attached_image[0],attached_image_width[0],attached_image_height[0]
+    else:
+    	attached_image,attached_image_width,attached_image_height=None,0,0
     quoted_info = get_tweet_info(quoted_id)
     (
         profile_name_quoted,
@@ -401,11 +419,15 @@ def screenshot_quote_dark(id):
         quoted_info["date"],
         quoted_info["text_range"],
         quoted_info["quoted_id"],
-        quoted_info["attached_image"],
-        quoted_info["width"],
-        quoted_info["height"],
+        quoted_info["attached_images"],
+        quoted_info["widths"],
+        quoted_info["heights"],
         quoted_info["sensitive"]
     )
+    if quoted_image:
+    	quoted_image,quoted_image_width,quoted_image_height=quoted_image[0],quoted_image_width[0],quoted_image_height[0]
+    else:
+    	quoted_image,quoted_image_width,quoted_image_height=None,0,0
     if True in [quoted_sensitive,sensitive]:
     	sensitive=True
     else:
