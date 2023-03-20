@@ -54,9 +54,9 @@ def reply_mentions():
     count = 2
     reply_1 = "Your screenshot can be found below😁!\n\nRemember your commands:\n 'All' command gets all the tweets above the tweet you commented on in the thread.\n\n 'light' and 'dark' commands returns your screenshot in light mode⬜ and dark mode⬛"
     reply_2="Your screenshot can be found below 😁!\n\n🤩Want to get your screenshot without using the bot? Visit : screenshoter.live ."
-    #reply=random.choice([reply_1,reply_2])
+    reply=random.choice([reply_1,reply_2])
     #reply = "Your screenshot can be found below😁!\n\nAd: Everyone will run after this if they knew how good this was.\nThis?🤔\nYea, what I'm about to tell you😎👇\nGet Free daily trade Calls on Cryptos and NFts with Giveaways here http://t.me/tradewithwealth"
-    reply="Your screenshot can be found below 😁!\n\n🤩Ad: MyCowrie is the 1st crypto to launch with a moneyback guarantee & by a legal team. Join their group to buy some before the next pump & CEX Listing: https://t.co/BeDkx0bNES"
+    #reply="Your screenshot can be found below 😁!\n\n🤩Ad: MyCowrie is the 1st crypto to launch with a moneyback guarantee & by a legal team. Join their group to buy some before the next pump & CEX Listing: https://t.co/BeDkx0bNES"
 
 
 
