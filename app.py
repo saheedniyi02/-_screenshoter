@@ -1,8 +1,7 @@
 import pickle
-from apscheduler.schedulers.background import BackgroundScheduler
 from collections import Counter
 import datetime
-from reply_mentions import reply_mentions,reply_form, clean_replied
+from reply_mentions import reply_form
 from flask import Flask,render_template,request,redirect,url_for,send_file,jsonify
 
 app = Flask(__name__)
@@ -66,12 +65,6 @@ def get_stats():
 @app.route('/files_download/<filename>')
 def files_download(filename):
     return send_file("static/"+filename,as_attachment=True)
-
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=reply_mentions, trigger="interval", seconds=27)
-scheduler.add_job(func=clean_replied,trigger="interval",seconds=86400)
-scheduler.start()
 
 
 if __name__ == "__main__":
