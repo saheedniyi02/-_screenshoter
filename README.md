@@ -17,4 +17,4 @@ The bot gained massive usage and moved from **0 to 175 thousand followers** and 
 
 Also, a website was created to support the bot (since it constantly hits twitter limit of 2,400 tweets per day) and allows twitter users to download tweets from the tweet link. **The website averages, 700 image downloads per day!**
 
-The bot is **no longer active though** because of the new restrictions placed by twitter on their API.
+The bot is **no longer active though** because of the new restrictions placed by twitter on their API, the twitter account has since been converted to a football stats,analytics and memes account.
