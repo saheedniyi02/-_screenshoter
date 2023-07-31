@@ -18,4 +18,4 @@ The bot gained massive usage and moved from **0 to 175 thousand followers** and 
 
 Also, a [website](https://screenshoter.herokuapp.com/) was created to support the bot (since it constantly hits twitter limit of 2,400 tweets per day) and allows twitter users to download tweets from the tweet link. **The [website](https://screenshoter.herokuapp.com/) original domain name (screenshoter.live) averaged 700 image downloads per day** from april 23rd 2022 to june 15th 2023.
 
-The bot is **no longer active though** because of the new restrictions placed by twitter on their API, the twitter account has since been converted to a football stats,analytics and memes account.
+The [bot](https://twitter.com/_screenshoter?lang=en) is **no longer active though** because of the new restrictions placed by twitter on their API.
