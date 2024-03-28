@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from PIL import Image, ImageFont, ImageDraw
 from tweepy import API, Client, OAuth1UserHandler
 from statistics import mean
+import tweepy
 
 
 API_KEY = os.environ.get("API_KEY")
@@ -27,55 +28,67 @@ auth = OAuth1UserHandler(
 
 api = API(auth,wait_on_rate_limit=True)
 
+client = Client(consumer_key=API_KEY,
+                consumer_secret=API_SECRET_KEY,
+                access_token=ACCESS_TOKEN,
+                access_token_secret=ACCESS_TOKEN_SECRET,
+                bearer_token=BEARER_TOKEN)
 
 def get_tweet_info(id):
-    replied_to = api.get_status(
-        id, include_ext_alt_text=True, include_entities=True, tweet_mode="extended"
-    )
-    user_info = replied_to.user
-    date_created = replied_to.created_at.strftime("%H:%M . %b %d, %Y")
+    replied_to = client.get_tweet(id, expansions=["author_id", "referenced_tweets.id", "in_reply_to_user_id",
+                                                  "attachments.media_keys", "entities.mentions.username"],
+                                  media_fields=tweepy.media.MEDIA_FIELDS,
+                                  user_fields=tweepy.user.USER_FIELDS,
+                                  tweet_fields=tweepy.tweet.PUBLIC_TWEET_FIELDS)
+    user_info = replied_to.includes['users'][0]
+    date_created = replied_to.data.created_at.strftime("%H:%M . %b %d, %Y")
     profile_url = user_info.profile_image_url
-    mentions = replied_to.entities.get("user_mentions")
-    mentioned_usernames = ["@" + mention["screen_name"] for mention in mentions]
+    mentions = replied_to.data.entities.get("mentions")
+    if mentions:
+        mentioned_usernames = ["@" + mention['username']
+                               for mention in mentions]
+    else:
+        mentioned_usernames = []
     try:
         profile_picture = Image.open(urlopen(profile_url))
     except:
         profile_picture = Image.open("assets/default_profile.png")
         profile_picture = profile_picture.convert("RGB")
     try:
-        quoted_id = replied_to.quoted_status.id
+        quoted_id = replied_to.includes["tweets"][0].id
     except:
         quoted_id = None
     try:
-        image_urls = [media["media_url_https"] for media in replied_to.extended_entities["media"]]
-        attached_images = [Image.open(urlopen(image_url)) for image_url in image_urls]
-        widths,heights=[],[]
+        image_urls = [media.url for media in replied_to.includes["media"]]
+        attached_images = [Image.open(urlopen(image_url))
+                           for image_url in image_urls]
+        widths, heights = [], []
         for image in attached_images:
-        	image_size=image.size
-        	widths.append(image_size[0])
-        	heights.append(image_size[1])
-        sensitive=replied_to.possibly_sensitive
+            image_size = image.size
+            widths.append(image_size[0])
+            heights.append(image_size[1])
+        sensitive = replied_to.data.possibly_sensitive
     except:
         attached_images = []
-        widths=[]
-        heights=[]
-        sensitive=False
+        widths = []
+        heights = []
+        sensitive = False
 
     return {
         "name": user_info.name,
-        "username": "@" + str(user_info.screen_name),
+        "username": "@" + str(user_info.username),
         "verified": user_info.verified,
-        "text": replied_to.full_text,
+        "text": replied_to.data.text,
         "image": profile_picture,
         "date": date_created,
-        "in_reply_to_status_id": replied_to.in_reply_to_status_id,
+        "in_reply_to_status_id": replied_to.data.in_reply_to_user_id,
         "mentioned_users": mentioned_usernames,
-        "text_range": replied_to.display_text_range,
+        "text_range": [0, len(replied_to.data.text)],
         "quoted_id": quoted_id,
         "attached_images": attached_images,
-        "widths":widths,
-        "heights":heights,
-        "sensitive":sensitive
+        "widths": widths,
+        "heights": heights,
+        "sensitive": sensitive
     }
 
 
