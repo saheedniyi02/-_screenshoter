@@ -34,6 +34,7 @@ client = Client(consumer_key=API_KEY,
                 access_token_secret=ACCESS_TOKEN_SECRET,
                 bearer_token=BEARER_TOKEN)
 
+
 def get_tweet_info(id):
     replied_to = client.get_tweet(id, expansions=["author_id", "referenced_tweets.id", "in_reply_to_user_id",
                                                   "attachments.media_keys", "entities.mentions.username"],
@@ -43,8 +44,9 @@ def get_tweet_info(id):
     user_info = replied_to.includes['users'][0]
     date_created = replied_to.data.created_at.strftime("%H:%M . %b %d, %Y")
     profile_url = user_info.profile_image_url
-    mentions = replied_to.data.entities.get("mentions")
+
     if mentions:
+        mentions = replied_to.data.entities.get("mentions")
         mentioned_usernames = ["@" + mention['username']
                                for mention in mentions]
     else:
@@ -81,10 +83,10 @@ def get_tweet_info(id):
         "text": replied_to.data.text,
         "image": profile_picture,
         "date": date_created,
-        "in_reply_to_status_id": replied_to.data.in_reply_to_user_id,
+        "in_reply_to_status_id": quoted_id,
         "mentioned_users": mentioned_usernames,
         "text_range": [0, len(replied_to.data.text)],
-        "quoted_id": quoted_id,
+        "quoted_id": None,
         "attached_images": attached_images,
         "widths": widths,
         "heights": heights,
