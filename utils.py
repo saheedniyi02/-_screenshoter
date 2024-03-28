@@ -45,11 +45,11 @@ def get_tweet_info(id):
     date_created = replied_to.data.created_at.strftime("%H:%M . %b %d, %Y")
     profile_url = user_info.profile_image_url
 
-    if mentions:
+    try:
         mentions = replied_to.data.entities.get("mentions")
         mentioned_usernames = ["@" + mention['username']
                                for mention in mentions]
-    else:
+    except:
         mentioned_usernames = []
     try:
         profile_picture = Image.open(urlopen(profile_url))
